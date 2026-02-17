@@ -1,0 +1,428 @@
+{
+  "Common": {
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "or": "or",
+    "email": "Email"
+  },
+  "Metadata": {
+    "title": "Podify",
+    "description": "Turn any text into a Podcast — with your own voice. AI-powered two-person dialogue podcast generation platform."
+  },
+  "Auth": {
+    "login": {
+      "title": "Sign in to Podify",
+      "description": "Choose a sign-in method to continue",
+      "googleButton": "Sign in with Google",
+      "googleNotReady": "Google sign-in is not configured yet. Please use Email/Password.",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up",
+      "fallbackError": "Sign-in failed. Please try again later."
+    },
+    "register": {
+      "title": "Create account",
+      "description": "Start turning text into Podcasts",
+      "nameLabel": "Name (optional)",
+      "namePlaceholder": "Your name",
+      "password": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "submit": "Create account",
+      "submitting": "Creating...",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in",
+      "fallbackError": "Registration failed. Please try again later."
+    },
+    "forgotPassword": {
+      "title": "Forgot password",
+      "description": "Enter your email and we'll send you a password reset link",
+      "submit": "Send reset link",
+      "submitting": "Sending...",
+      "backToLogin": "Back to sign in",
+      "sentTitle": "Reset link sent",
+      "sentDescription": "If the email exists, we've sent a password reset link to your inbox. Please check and complete the reset within 1 hour.",
+      "fallbackError": "Failed to send. Please try again later."
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "description": "Please enter your new password",
+      "newPassword": "New password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmPassword": "Confirm new password",
+      "confirmPlaceholder": "Re-enter new password",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "invalidTitle": "Invalid link",
+      "invalidDescription": "The reset link is invalid or expired. Please request a new one.",
+      "reapply": "Request again",
+      "passwordMismatch": "Passwords do not match",
+      "fallbackError": "Reset failed. Please try again later."
+    }
+  },
+  "Layout": {
+    "header": {
+      "account": "Account",
+      "settings": "Settings",
+      "logout": "Log out",
+      "usage": "{used} / {limit} episodes"
+    },
+    "sidebar": {
+      "createPodcast": "Generate Podcast",
+      "history": "History",
+      "voices": "Voice Management"
+    },
+    "languageSwitcher": {
+      "label": "Language",
+      "zhTW": "繁體中文",
+      "en": "English"
+    }
+  },
+  "History": {
+    "title": "History",
+    "empty": "No podcasts generated yet",
+    "emptyDescription": "Start your first podcast generation!",
+    "startGenerate": "Start generating",
+    "loadMore": "Load more",
+    "status": {
+      "pending": "Pending",
+      "generatingScript": "Generating script",
+      "scriptReady": "Edit script",
+      "generatingAudio": "Generating audio",
+      "failed": "Failed"
+    },
+    "detail": {
+      "backToHistory": "Back to history",
+      "downloadMp3": "Download MP3",
+      "failedPrefix": "Failed: ",
+      "unknownError": "Unknown error",
+      "sourceContent": "Source content",
+      "editScript": "Edit Script",
+      "scriptPreview": "Script Preview"
+    }
+  },
+  "Voices": {
+    "title": "Voice Management",
+    "empty": "No cloned voices yet",
+    "emptyDescription": "Upload a voice sample to start generating Podcasts with your own voice",
+    "locked": "Voice Clone is a Pro feature",
+    "lockedDescription": "Upgrade to Pro to upload and use your own voice.",
+    "upgradeButton": "Coming soon",
+    "uploadVoice": "Upload Voice",
+    "deleteTitle": "Delete this voice?",
+    "deleteDescription": "This action cannot be undone. You will no longer be able to use this voice for Podcast generation.",
+    "clickToRename": "Click to rename",
+    "deleting": "Deleting...",
+    "confirmDelete": "Delete",
+    "upload": {
+      "title": "Upload voice sample",
+      "description": "Upload a voice recording to clone your voice. We recommend recording 1-3 minutes of clear monologue without background noise.",
+      "nameLabel": "Voice name",
+      "namePlaceholder": "e.g., My Voice",
+      "fileLabel": "Audio file (MP3/WAV/M4A, max 25MB)",
+      "fileSizeError": "File size cannot exceed {maxSize}MB",
+      "uploading": "Uploading...",
+      "cloning": "Cloning...",
+      "done": "Done!",
+      "success": "Voice cloning complete!",
+      "submit": "Upload and start cloning",
+      "uploadFailed": "Upload failed",
+      "fallbackError": "Upload failed. Please try again later."
+    }
+  },
+  "Settings": {
+    "title": "Settings",
+    "accountInfo": "Account info",
+    "name": "Name",
+    "plan": "Plan",
+    "freePlan": "Free",
+    "proPlan": "Pro",
+    "registeredDate": "Registered"
+  },
+  "CreatePodcast": {
+    "title": "Generate Podcast",
+    "description": "Paste text or enter a URL to start generating your Podcast",
+    "tabs": {
+      "text": "Paste Text",
+      "url": "Extract from URL"
+    },
+    "text": {
+      "placeholder": "Paste the text content you want to turn into a Podcast...",
+      "charCount": "{count} / {limit} chars",
+      "truncatedWarning": "Content exceeded the limit and has been truncated to {limit} characters"
+    },
+    "url": {
+      "placeholder": "https://example.com/article",
+      "invalidUrl": "Please enter a valid URL (starting with http:// or https://)",
+      "extractButton": "Extract Content",
+      "extracting": "Extracting..."
+    },
+    "preview": {
+      "title": "Extraction Result",
+      "useContent": "Use This Content",
+      "reExtract": "Re-extract"
+    },
+    "switchConfirm": {
+      "title": "Switch input method?",
+      "description": "Switching will clear the current content."
+    },
+    "next": "Next",
+    "minCharsHint": "At least {min} characters required to continue",
+    "titleLabel": "Podcast Title",
+    "titlePlaceholder": "Give your Podcast a title",
+    "fallbackError": "Operation failed. Please try again later.",
+    "usage": "{used} / {limit} podcasts this month",
+    "usageLimitReached": "Monthly limit reached",
+    "usageUpgradeHint": "Pro plan coming soon, stay tuned"
+  },
+  "ScriptGeneration": {
+    "title": "Generating",
+    "description": "AI is generating a dialogue script for your Podcast, please wait...",
+    "status": {
+      "pending": "Preparing...",
+      "generatingScript": "Generating script...",
+      "scriptReady": "Script ready!",
+      "generatingAudio": "Generating audio...",
+      "completed": "Done!",
+      "failed": "Generation failed"
+    },
+    "progress": "Analyzing content and generating dialogue...",
+    "progressAudio": "Synthesizing speech, this may take a few minutes...",
+    "redirecting": "Redirecting to edit page...",
+    "regenerate": "Regenerate Script",
+    "retrySynthesize": "Retry Audio Synthesis",
+    "editScript": "Edit Script",
+    "failedMessage": "Generation failed: {error}",
+    "fallbackError": "Unknown error. Please try again."
+  },
+  "ScriptEdit": {
+    "title": "Edit Script",
+    "description": "Preview and edit the AI-generated dialogue script, then proceed to generate audio",
+    "hostA": "Host A",
+    "hostB": "Host B",
+    "charCount": "{count} / {limit} chars",
+    "charLimitWarning": "Exceeds {limit} character limit",
+    "voiceA": "Host A Voice",
+    "voiceB": "Host B Voice",
+    "defaultVoice": "Default Voice",
+    "confirmAndGenerate": "Confirm & Generate Audio",
+    "saving": "Saving...",
+    "backToHistory": "Back to history",
+    "notReady": {
+      "title": "Script not ready",
+      "description": "Please wait for script generation to complete"
+    },
+    "fallbackError": "Save failed. Please try again later."
+  },
+  "Errors": {
+    "auth": {
+      "emailPasswordRequired": "Email and password are required",
+      "invalidCredentials": "Invalid email or password",
+      "loginFailed": "Sign-in failed. Please try again later.",
+      "missingGoogleToken": "Missing Google ID token",
+      "googleVerifyFailed": "Google verification failed",
+      "googleLoginFailed": "Google sign-in failed. Please try again later.",
+      "invalidEmail": "Invalid email format",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "emailTaken": "This email is already registered",
+      "registerFailed": "Registration failed. Please try again later.",
+      "emailRequired": "Email is required",
+      "resetLinkSent": "If the email exists, we've sent a reset link",
+      "sendResetFailed": "Failed to send reset link. Please try again later.",
+      "tokenPasswordRequired": "Token and new password are required",
+      "resetLinkInvalid": "Reset link is invalid or expired. Please request a new one.",
+      "resetFailed": "Password reset failed. Please try again later.",
+      "resetSuccess": "Password reset successful. Please sign in again."
+    },
+    "unauthorized": "Unauthorized",
+    "extract": {
+      "urlRequired": "Please enter a URL",
+      "invalidUrl": "Invalid URL format",
+      "timeout": "Extraction timed out. Please try again later.",
+      "htmlTooLarge": "Web page content is too large to extract",
+      "fetchFailed": "Unable to access the URL",
+      "parseFailed": "Unable to parse web page content",
+      "failed": "Extraction failed. Please try again later."
+    },
+    "podcast": {
+      "titleRequired": "Please enter a Podcast title",
+      "invalidSourceType": "Unsupported source type",
+      "contentRequired": "Please enter content",
+      "contentTooShort": "Content must be at least 100 characters",
+      "createFailed": "Creation failed. Please try again later."
+    },
+    "script": {
+      "podcastIdRequired": "Podcast ID is required",
+      "podcastNotFound": "Podcast not found",
+      "alreadyGenerating": "Script is already being generated",
+      "generateFailed": "Generation failed. Please try again later.",
+      "invalidScript": "Invalid script format",
+      "lineTooLong": "Line text exceeds character limit",
+      "invalidSpeaker": "Invalid speaker",
+      "saveFailed": "Save failed. Please try again later."
+    },
+    "voice": {
+      "nameRequired": "Voice name is required",
+      "fileRequired": "Please upload an audio file",
+      "fileTooLarge": "File size cannot exceed 25MB",
+      "unsupportedFormat": "Unsupported audio format. Please use MP3, WAV, or M4A.",
+      "cloneFailed": "Voice cloning failed. Please try again later.",
+      "notFound": "Voice not found",
+      "updateFailed": "Update failed. Please try again later.",
+      "deleteFailed": "Delete failed. Please try again later."
+    },
+    "synthesize": {
+      "podcastIdRequired": "Podcast ID is required",
+      "podcastNotFound": "Podcast not found",
+      "invalidStatus": "Invalid podcast status for synthesis",
+      "failed": "Audio synthesis failed. Please try again later."
+    },
+    "usage": {
+      "limitReached": "Monthly generation limit reached",
+      "fetchFailed": "Failed to fetch usage info"
+    },
+    "feature": {
+      "proOnly": "This feature is available on the Pro plan only"
+    }
+  },
+  "Email": {
+    "resetPassword": {
+      "subject": "Reset your Podify password",
+      "heading": "Reset password",
+      "body": "You received this email because someone requested a password reset for your Podify account.",
+      "instruction": "Click the link below to set a new password (expires in 1 hour):",
+      "buttonText": "Reset password",
+      "ignore": "If you did not request a password reset, please ignore this email."
+    }
+  },
+  "Landing": {
+    "nav": {
+      "login": "Sign in",
+      "register": "Sign up"
+    },
+    "hero": {
+      "tagline": "Text to Podcast, instantly",
+      "subtitle": "Paste an article, AI creates the dialogue, in your voice.",
+      "cta": "Get Started Free"
+    },
+    "howItWorks": {
+      "title": "Generate Your Podcast in 3 Steps",
+      "subtitle": "Simple, fast, and professional",
+      "step1": {
+        "title": "Paste Content",
+        "description": "Copy text or enter a URL to auto-extract content"
+      },
+      "step2": {
+        "title": "Choose Voice",
+        "description": "Use default voices or upload a sample to clone yours"
+      },
+      "step3": {
+        "title": "Generate Podcast",
+        "description": "AI automatically creates dialogue script and audio"
+      }
+    },
+    "features": {
+      "title": "Powerful Features, Simple to Use",
+      "subtitle": "Making professional podcast creation accessible to everyone",
+      "feature1": {
+        "title": "Paste and go",
+        "description": "Supports articles and web links. Automatically removes ads and noise, keeping only what matters."
+      },
+      "feature2": {
+        "title": "Natural two-person dialogue",
+        "description": "Turns your text into a conversation between two hosts. Preview and edit before generating."
+      },
+      "feature3": {
+        "title": "Your own voice",
+        "description": "Upload a short recording and your podcast will sound like you. Make it personal."
+      }
+    },
+    "demo": {
+      "title": "Sample Podcasts",
+      "subtitle": "Listen to AI-generated podcasts",
+      "sample1": {
+        "title": "Tech Trends Analysis",
+        "duration": "5:32",
+        "description": "Dialogue podcast generated from tech news"
+      },
+      "sample2": {
+        "title": "History Story Sharing",
+        "duration": "8:15",
+        "description": "Historical articles turned into engaging dialogue"
+      },
+      "sample3": {
+        "title": "Study Notes Summary",
+        "duration": "6:47",
+        "description": "Learning notes transformed into digestible podcasts"
+      },
+      "comingSoon": "Sample audio coming soon"
+    },
+    "pricing": {
+      "title": "Choose Your Plan",
+      "subtitle": "Start free, upgrade anytime",
+      "popular": "Most popular",
+      "free": {
+        "name": "Free Plan",
+        "price": "$0 / month",
+        "description": "Perfect for trying out the platform",
+        "feature1": "3 podcasts per month",
+        "feature2": "Default voices only",
+        "feature3": "Voice cloning",
+        "feature4": "Priority processing",
+        "cta": "Start Free"
+      },
+      "pro": {
+        "name": "Pro Plan",
+        "price": "Coming soon",
+        "description": "More quota, more possibilities",
+        "feature1": "Higher monthly quota",
+        "feature2": "Default voices",
+        "feature3": "Voice cloning",
+        "feature4": "Priority processing",
+        "cta": "Stay tuned"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Have more questions? Contact us",
+      "q1": {
+        "question": "What languages are supported?",
+        "answer": "Currently supports Traditional Chinese and English content. The system automatically detects the language and generates corresponding dialogue scripts."
+      },
+      "q2": {
+        "question": "Is voice cloning secure?",
+        "answer": "We use industry-leading ElevenLabs API for voice cloning. All voice samples are encrypted and stored securely, used only for your account's podcast generation and never for other purposes."
+      },
+      "q3": {
+        "question": "What's the difference between Free and Pro plans?",
+        "answer": "Free plan allows 3 podcasts per month with default voices only. Pro plan offers unlimited generation, voice cloning, and priority processing."
+      },
+      "q4": {
+        "question": "How long does it take to generate a podcast?",
+        "answer": "Script generation typically takes 30 seconds to 1 minute. Audio synthesis takes 2-5 minutes depending on length. You can leave the page during the wait, and the system will save your progress."
+      },
+      "q5": {
+        "question": "Can I cancel my subscription?",
+        "answer": "Yes, you can cancel anytime. After cancellation, you'll retain your remaining monthly quota, and no charges will occur in the following month."
+      }
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Sign up now and generate your first AI podcast for free. No credit card required. Upgrade anytime.",
+      "button": "Get Started Free"
+    },
+    "footer": {
+      "description": "AI-powered two-person dialogue podcast generation platform",
+      "product": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "company": "Company",
+      "about": "About",
+      "contact": "Contact",
+      "copyright": "© {year} Podify"
+    }
+  }
+}

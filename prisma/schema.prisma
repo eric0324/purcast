@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                 String    @unique
+  passwordHash          String?   @map("password_hash")
+  googleId              String?   @unique @map("google_id")
+  name                  String?
+  plan                  String    @default("free") // 'free' | 'pro'
+  subscriptionEndDate   DateTime? @map("subscription_end_date") @db.Timestamptz
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  voices   Voice[]
+  podcasts Podcast[]
+  usage    Usage[]
+
+  @@map("users")
+}
+
+model Voice {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  elevenlabsVoiceId String   @map("elevenlabs_voice_id")
+  name              String
+  sampleUrl         String?  @map("sample_url")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("voices")
+}
+
+model Podcast {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  title         String
+  sourceType    String   @map("source_type") // 'text' | 'url'
+  sourceContent String   @map("source_content")
+  sourceUrl     String?  @map("source_url")
+  script        Json?
+  audioUrl      String?  @map("audio_url")
+  duration      Int? // in seconds
+  status        String   @default("pending") // 'pending' | 'generating_script' | 'script_ready' | 'generating_audio' | 'completed' | 'failed'
+  errorMessage  String?  @map("error_message")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("podcasts")
+}
+
+model Usage {
+  id              String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String @map("user_id") @db.Uuid
+  month           String // 'YYYY-MM'
+  generationCount Int    @default(0) @map("generation_count")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, month])
+  @@map("usage")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  token     String    @unique
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz
+  usedAt    DateTime? @map("used_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("password_reset_tokens")
+}

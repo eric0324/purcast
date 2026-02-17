@@ -1,0 +1,428 @@
+{
+  "Common": {
+    "loading": "載入中...",
+    "cancel": "取消",
+    "confirm": "確認",
+    "or": "或",
+    "email": "Email"
+  },
+  "Metadata": {
+    "title": "Podify",
+    "description": "把任何文字內容變成 Podcast — 用你自己的聲音。AI 驅動的雙人對話 Podcast 生成平台。"
+  },
+  "Auth": {
+    "login": {
+      "title": "登入 Podify",
+      "description": "選擇登入方式以繼續",
+      "googleButton": "使用 Google 帳號登入",
+      "googleNotReady": "Google 登入尚未設定，請使用 Email/密碼登入",
+      "password": "密碼",
+      "forgotPassword": "忘記密碼？",
+      "submit": "登入",
+      "submitting": "登入中...",
+      "noAccount": "還沒有帳號？",
+      "register": "註冊",
+      "fallbackError": "登入失敗，請稍後再試"
+    },
+    "register": {
+      "title": "建立帳號",
+      "description": "開始將文字內容變成 Podcast",
+      "nameLabel": "名稱（選填）",
+      "namePlaceholder": "你的名稱",
+      "password": "密碼",
+      "passwordPlaceholder": "至少 8 個字元",
+      "submit": "建立帳號",
+      "submitting": "建立中...",
+      "hasAccount": "已有帳號？",
+      "login": "登入",
+      "fallbackError": "註冊失敗，請稍後再試"
+    },
+    "forgotPassword": {
+      "title": "忘記密碼",
+      "description": "輸入您的 Email，我們會寄送密碼重設連結",
+      "submit": "寄送重設連結",
+      "submitting": "寄送中...",
+      "backToLogin": "返回登入",
+      "sentTitle": "已寄送重設連結",
+      "sentDescription": "如果該信箱存在，我們已寄送密碼重設連結到您的信箱。請查收並在 1 小時內完成重設。",
+      "fallbackError": "發送失敗，請稍後再試"
+    },
+    "resetPassword": {
+      "title": "重設密碼",
+      "description": "請輸入您的新密碼",
+      "newPassword": "新密碼",
+      "passwordPlaceholder": "至少 8 個字元",
+      "confirmPassword": "確認新密碼",
+      "confirmPlaceholder": "再次輸入新密碼",
+      "submit": "重設密碼",
+      "submitting": "重設中...",
+      "invalidTitle": "連結無效",
+      "invalidDescription": "重設連結無效或已過期，請重新申請。",
+      "reapply": "重新申請",
+      "passwordMismatch": "兩次密碼輸入不一致",
+      "fallbackError": "重設失敗，請稍後再試"
+    }
+  },
+  "Layout": {
+    "header": {
+      "account": "帳號",
+      "settings": "設定",
+      "logout": "登出",
+      "usage": "{used} / {limit} 集"
+    },
+    "sidebar": {
+      "createPodcast": "生成 Podcast",
+      "history": "生成歷史",
+      "voices": "聲音管理"
+    },
+    "languageSwitcher": {
+      "label": "語言",
+      "zhTW": "繁體中文",
+      "en": "English"
+    }
+  },
+  "History": {
+    "title": "生成歷史",
+    "empty": "還沒有生成過 Podcast",
+    "emptyDescription": "開始你的第一次 Podcast 生成吧！",
+    "startGenerate": "開始生成",
+    "loadMore": "載入更多",
+    "status": {
+      "pending": "等待中",
+      "generatingScript": "生成腳本中",
+      "scriptReady": "待編輯腳本",
+      "generatingAudio": "生成音檔中",
+      "failed": "生成失敗"
+    },
+    "detail": {
+      "backToHistory": "返回歷史",
+      "downloadMp3": "下載 MP3",
+      "failedPrefix": "生成失敗：",
+      "unknownError": "未知錯誤",
+      "sourceContent": "原始內容",
+      "editScript": "編輯腳本",
+      "scriptPreview": "腳本預覽"
+    }
+  },
+  "Voices": {
+    "title": "聲音管理",
+    "empty": "還沒有複製聲音",
+    "emptyDescription": "上傳一段你的聲音樣本，開始用自己的聲音生成 Podcast",
+    "locked": "Voice Clone 是 Pro 方案功能",
+    "lockedDescription": "升級至 Pro 方案即可上傳並使用你自己的聲音。",
+    "upgradeButton": "即將推出",
+    "uploadVoice": "上傳聲音",
+    "deleteTitle": "確定要刪除此聲音？",
+    "deleteDescription": "此操作無法復原。刪除後將無法再使用此聲音生成 Podcast。",
+    "clickToRename": "點擊以重新命名",
+    "deleting": "刪除中...",
+    "confirmDelete": "確定刪除",
+    "upload": {
+      "title": "上傳聲音樣本",
+      "description": "上傳一段你的聲音錄音，用來複製你的聲音。建議錄製 1-3 分鐘清晰的獨白，避免背景噪音。",
+      "nameLabel": "聲音名稱",
+      "namePlaceholder": "例如：我的聲音",
+      "fileLabel": "音檔（MP3/WAV/M4A，最大 25MB）",
+      "fileSizeError": "檔案大小不能超過 {maxSize}MB",
+      "uploading": "上傳中...",
+      "cloning": "複製中...",
+      "done": "完成！",
+      "success": "聲音複製完成！",
+      "submit": "上傳並開始複製",
+      "uploadFailed": "上傳失敗",
+      "fallbackError": "上傳失敗，請稍後再試"
+    }
+  },
+  "Settings": {
+    "title": "設定",
+    "accountInfo": "帳號資訊",
+    "name": "名稱",
+    "plan": "方案",
+    "freePlan": "免費方案",
+    "proPlan": "Pro",
+    "registeredDate": "註冊日期"
+  },
+  "CreatePodcast": {
+    "title": "生成 Podcast",
+    "description": "貼上文字或輸入網址，開始生成你的 Podcast",
+    "tabs": {
+      "text": "貼上文字",
+      "url": "網址擷取"
+    },
+    "text": {
+      "placeholder": "在此貼上你想轉換成 Podcast 的文字內容...",
+      "charCount": "{count} / {limit} 字",
+      "truncatedWarning": "內容已超過上限，已自動截斷至 {limit} 字"
+    },
+    "url": {
+      "placeholder": "https://example.com/article",
+      "invalidUrl": "請輸入有效的網址（以 http:// 或 https:// 開頭）",
+      "extractButton": "擷取內容",
+      "extracting": "正在擷取..."
+    },
+    "preview": {
+      "title": "擷取結果",
+      "useContent": "使用此內容",
+      "reExtract": "重新擷取"
+    },
+    "switchConfirm": {
+      "title": "切換輸入方式？",
+      "description": "切換後目前的內容將被清除。"
+    },
+    "next": "下一步",
+    "minCharsHint": "至少需要 {min} 個字元才能繼續",
+    "titleLabel": "Podcast 標題",
+    "titlePlaceholder": "為你的 Podcast 取一個標題",
+    "fallbackError": "操作失敗，請稍後再試",
+    "usage": "本月已使用 {used} / {limit} 集",
+    "usageLimitReached": "本月額度已用完",
+    "usageUpgradeHint": "Pro 方案即將推出，敬請期待"
+  },
+  "ScriptGeneration": {
+    "title": "生成中",
+    "description": "AI 正在為你的 Podcast 生成對話腳本，請稍候...",
+    "status": {
+      "pending": "準備中...",
+      "generatingScript": "生成腳本中...",
+      "scriptReady": "腳本已完成！",
+      "generatingAudio": "生成音檔中...",
+      "completed": "完成！",
+      "failed": "生成失敗"
+    },
+    "progress": "正在分析內容並生成對話...",
+    "progressAudio": "正在合成語音，這可能需要幾分鐘...",
+    "redirecting": "正在跳轉到編輯頁面...",
+    "regenerate": "重新生成腳本",
+    "retrySynthesize": "重試語音合成",
+    "editScript": "返回編輯腳本",
+    "failedMessage": "生成失敗：{error}",
+    "fallbackError": "未知錯誤，請重新嘗試"
+  },
+  "ScriptEdit": {
+    "title": "編輯腳本",
+    "description": "預覽並編輯 AI 生成的對話腳本，確認後即可生成語音",
+    "hostA": "主持人 A",
+    "hostB": "主持人 B",
+    "charCount": "{count} / {limit} 字",
+    "charLimitWarning": "超過 {limit} 字上限",
+    "voiceA": "主持人 A 聲音",
+    "voiceB": "主持人 B 聲音",
+    "defaultVoice": "預設聲音",
+    "confirmAndGenerate": "確認並生成語音",
+    "saving": "儲存中...",
+    "backToHistory": "返回歷史",
+    "notReady": {
+      "title": "腳本尚未就緒",
+      "description": "請先等待腳本生成完成"
+    },
+    "fallbackError": "儲存失敗，請稍後再試"
+  },
+  "Errors": {
+    "auth": {
+      "emailPasswordRequired": "Email 和密碼為必填",
+      "invalidCredentials": "帳號或密碼錯誤",
+      "loginFailed": "登入失敗，請稍後再試",
+      "missingGoogleToken": "缺少 Google ID token",
+      "googleVerifyFailed": "Google 驗證失敗",
+      "googleLoginFailed": "Google 登入失敗，請稍後再試",
+      "invalidEmail": "Email 格式不正確",
+      "passwordTooShort": "密碼至少需要 8 個字元",
+      "emailTaken": "此 Email 已被註冊",
+      "registerFailed": "註冊失敗，請稍後再試",
+      "emailRequired": "Email 為必填",
+      "resetLinkSent": "如果該信箱存在，我們已寄送重設連結",
+      "sendResetFailed": "發送重設連結失敗，請稍後再試",
+      "tokenPasswordRequired": "Token 和新密碼為必填",
+      "resetLinkInvalid": "重設連結無效或已過期，請重新申請",
+      "resetFailed": "重設密碼失敗，請稍後再試",
+      "resetSuccess": "密碼重設成功，請重新登入"
+    },
+    "unauthorized": "未授權",
+    "extract": {
+      "urlRequired": "請輸入網址",
+      "invalidUrl": "網址格式不正確",
+      "timeout": "擷取逾時，請稍後再試",
+      "htmlTooLarge": "網頁內容太大，無法擷取",
+      "fetchFailed": "無法存取該網址",
+      "parseFailed": "無法解析網頁內容",
+      "failed": "擷取失敗，請稍後再試"
+    },
+    "podcast": {
+      "titleRequired": "請輸入 Podcast 標題",
+      "invalidSourceType": "不支援的來源類型",
+      "contentRequired": "請輸入內容",
+      "contentTooShort": "內容至少需要 100 個字元",
+      "createFailed": "建立失敗，請稍後再試"
+    },
+    "script": {
+      "podcastIdRequired": "缺少 Podcast ID",
+      "podcastNotFound": "找不到該 Podcast",
+      "alreadyGenerating": "腳本正在生成中",
+      "generateFailed": "生成失敗，請稍後再試",
+      "invalidScript": "腳本格式不正確",
+      "lineTooLong": "單行文字超過字數上限",
+      "invalidSpeaker": "無效的角色",
+      "saveFailed": "儲存失敗，請稍後再試"
+    },
+    "voice": {
+      "nameRequired": "請輸入聲音名稱",
+      "fileRequired": "請上傳音檔",
+      "fileTooLarge": "檔案大小不能超過 25MB",
+      "unsupportedFormat": "不支援的音檔格式，請使用 MP3、WAV 或 M4A",
+      "cloneFailed": "聲音複製失敗，請稍後再試",
+      "notFound": "找不到該聲音",
+      "updateFailed": "更新失敗，請稍後再試",
+      "deleteFailed": "刪除失敗，請稍後再試"
+    },
+    "synthesize": {
+      "podcastIdRequired": "缺少 Podcast ID",
+      "podcastNotFound": "找不到該 Podcast",
+      "invalidStatus": "Podcast 狀態不正確，無法開始合成",
+      "failed": "語音合成失敗，請稍後再試"
+    },
+    "usage": {
+      "limitReached": "本月生成額度已用完",
+      "fetchFailed": "無法取得用量資訊"
+    },
+    "feature": {
+      "proOnly": "此功能僅限 Pro 方案使用"
+    }
+  },
+  "Email": {
+    "resetPassword": {
+      "subject": "重設您的 Podify 密碼",
+      "heading": "重設密碼",
+      "body": "您收到這封信是因為有人申請重設您的 Podify 帳號密碼。",
+      "instruction": "請點擊下方連結設定新密碼（連結將於 1 小時後失效）：",
+      "buttonText": "重設密碼",
+      "ignore": "如果您沒有申請重設密碼，請忽略此信。"
+    }
+  },
+  "Landing": {
+    "nav": {
+      "login": "登入",
+      "register": "註冊"
+    },
+    "hero": {
+      "tagline": "文字秒變 Podcast",
+      "subtitle": "貼上文章，AI 生成對話，用你的聲音說出來。",
+      "cta": "免費開始使用"
+    },
+    "howItWorks": {
+      "title": "三步驟生成專屬 Podcast",
+      "subtitle": "簡單、快速、專業",
+      "step1": {
+        "title": "貼上內容",
+        "description": "複製文章或輸入網址，自動擷取內容"
+      },
+      "step2": {
+        "title": "選擇聲音",
+        "description": "使用預設聲音或上傳樣本複製你的聲音"
+      },
+      "step3": {
+        "title": "生成 Podcast",
+        "description": "AI 自動生成對話腳本並合成音檔"
+      }
+    },
+    "features": {
+      "title": "強大功能，簡單易用",
+      "subtitle": "讓每個人都能輕鬆製作專業 Podcast",
+      "feature1": {
+        "title": "貼上就搞定",
+        "description": "支援文章、網頁連結，自動去除廣告和雜訊，保留你需要的內容。"
+      },
+      "feature2": {
+        "title": "自然雙人對話",
+        "description": "自動將文字轉成兩人對談的腳本，生成前可以預覽和編輯。"
+      },
+      "feature3": {
+        "title": "用你自己的聲音",
+        "description": "上傳一段錄音，就能用你的聲音來播報，讓 Podcast 更有個人風格。"
+      }
+    },
+    "demo": {
+      "title": "試聽範例",
+      "subtitle": "聽聽 AI 生成的 Podcast 效果",
+      "sample1": {
+        "title": "科技趨勢解析",
+        "duration": "5:32",
+        "description": "從科技新聞文章生成的對話 Podcast"
+      },
+      "sample2": {
+        "title": "歷史故事分享",
+        "duration": "8:15",
+        "description": "將歷史文章轉換成生動的對話"
+      },
+      "sample3": {
+        "title": "學習筆記整理",
+        "duration": "6:47",
+        "description": "把學習筆記變成易於吸收的 Podcast"
+      },
+      "comingSoon": "範例音檔即將推出"
+    },
+    "pricing": {
+      "title": "選擇適合你的方案",
+      "subtitle": "免費開始，隨時升級",
+      "popular": "最受歡迎",
+      "free": {
+        "name": "免費方案",
+        "price": "NT$0 / 月",
+        "description": "適合想試用的使用者",
+        "feature1": "每月 3 個 Podcast",
+        "feature2": "使用預設聲音",
+        "feature3": "聲音複製功能",
+        "feature4": "優先處理",
+        "cta": "免費開始"
+      },
+      "pro": {
+        "name": "Pro 方案",
+        "price": "即將推出",
+        "description": "更多額度，更多可能",
+        "feature1": "更多每月額度",
+        "feature2": "使用預設聲音",
+        "feature3": "聲音複製功能",
+        "feature4": "優先處理",
+        "cta": "敬請期待"
+      }
+    },
+    "faq": {
+      "title": "常見問題",
+      "subtitle": "有其他問題？歡迎聯繫我們",
+      "q1": {
+        "question": "支援哪些語言？",
+        "answer": "目前支援繁體中文和英文內容。系統會自動偵測語言並生成對應的對話腳本。"
+      },
+      "q2": {
+        "question": "聲音複製安全嗎？",
+        "answer": "我們使用業界領先的 ElevenLabs API 進行聲音複製，所有語音樣本都經過加密儲存，僅用於為你的帳號生成 Podcast，不會用於其他用途。"
+      },
+      "q3": {
+        "question": "免費方案和 Pro 方案有什麼差別？",
+        "answer": "免費方案每月可生成 3 個 Podcast，僅能使用預設聲音。Pro 方案可無限生成，並支援聲音複製功能和優先處理。"
+      },
+      "q4": {
+        "question": "生成一個 Podcast 需要多久？",
+        "answer": "腳本生成通常需要 30 秒至 1 分鐘，語音合成則依長度而定，約需 2-5 分鐘。你可以在等待期間離開頁面，系統會保存進度。"
+      },
+      "q5": {
+        "question": "可以取消訂閱嗎？",
+        "answer": "可以隨時取消訂閱。取消後會保留當月剩餘配額，下個月不再扣款。"
+      }
+    },
+    "cta": {
+      "title": "準備好開始了嗎？",
+      "subtitle": "立即註冊，免費生成你的第一個 AI Podcast。不需要信用卡，隨時可以升級。",
+      "button": "免費開始使用"
+    },
+    "footer": {
+      "description": "AI 驅動的雙人對話 Podcast 生成平台",
+      "product": "產品",
+      "features": "功能特色",
+      "pricing": "價格方案",
+      "company": "公司",
+      "about": "關於我們",
+      "contact": "聯絡我們",
+      "copyright": "© {year} Podify"
+    }
+  }
+}

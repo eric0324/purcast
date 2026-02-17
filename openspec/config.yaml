@@ -1,0 +1,20 @@
+schema: spec-driven
+
+context: |
+  Project: Podify — AI-driven Podcast generation platform
+  Tagline: 把任何文字內容變成 Podcast — 用你自己的聲音
+  Tech stack: Next.js 14 (App Router), PostgreSQL (self-hosted on Vultr VPS), Self-built Auth (JWT + bcrypt + Google OAuth), Claude API (Sonnet), ElevenLabs Flash API, Cloudflare R2, ffmpeg, Vultr VPS + PM2, NewebPay (藍新金流)
+  Language: TypeScript
+  Target: MVP in 4 weeks, validate with 50 users
+  Core features: Content input (URL/text), Dual-host dialogue script generation, Voice Cloning TTS, User system, Pricing & billing
+  PRD: see /podify-prd.md for full requirements
+
+rules:
+  proposal:
+    - Reference specific PRD sections when applicable
+    - Keep proposals focused on MVP scope
+    - Always include a "Out of Scope" section referencing PRD §4.2
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Include acceptance criteria for each task
+    - Tag tasks with the relevant PRD section number
