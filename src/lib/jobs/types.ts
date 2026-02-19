@@ -26,7 +26,7 @@ export type StylePreset =
 export interface JobGenerationConfig {
   stylePreset: StylePreset;
   customPrompt?: string;
-  voiceId?: string;
+  voices?: Record<string, string>; // speaker → voiceId, e.g. { A: "xxx", B: "yyy" }
   maxArticles: number; // default 5
   targetMinutes: number; // default 15
 }

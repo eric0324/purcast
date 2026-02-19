@@ -107,9 +107,11 @@ export async function executeJob(jobData: JobData): Promise<void> {
     const tts = createTTSProvider();
     const defaultVoiceA =
       process.env.FISH_AUDIO_DEFAULT_VOICE_A || process.env.ELEVENLABS_DEFAULT_VOICE_A!;
-    const voiceAId = jobData.generationConfig.voiceId || defaultVoiceA;
-    const voiceBId =
+    const defaultVoiceB =
       process.env.FISH_AUDIO_DEFAULT_VOICE_B || process.env.ELEVENLABS_DEFAULT_VOICE_B!;
+    const voices = jobData.generationConfig.voices || {};
+    const voiceAId = voices["A"] || defaultVoiceA;
+    const voiceBId = voices["B"] || defaultVoiceB;
 
     const segments = await synthesizeScript(
       tts,

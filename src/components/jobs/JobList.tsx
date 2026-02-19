@@ -29,10 +29,11 @@ interface JobItem {
 
 export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
   const t = useTranslations("Jobs");
+  const tCommon = useTranslations("Common");
   const router = useRouter();
   const [jobs, setJobs] = useState(initialJobs);
   const [confirmAction, setConfirmAction] = useState<{
-    type: "activate" | "pause" | "delete";
+    type: "activate" | "pause" | "delete" | "runNow";
     jobId: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -50,6 +51,17 @@ export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
           prev.map((j) => (j.id === jobId ? { ...j, status } : j))
         );
       }
+    } finally {
+      setLoading(false);
+      setConfirmAction(null);
+    }
+  }
+
+  async function handleRunNow(jobId: string) {
+    setLoading(true);
+    try {
+      await fetch(`/api/jobs/${jobId}/run`, { method: "POST" });
+      router.refresh();
     } finally {
       setLoading(false);
       setConfirmAction(null);
@@ -123,6 +135,16 @@ export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
                   </span>
                 </div>
                 <div className="flex gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setConfirmAction({ type: "runNow", jobId: job.id });
+                    }}
+                  >
+                    {t("runNow")}
+                  </Button>
                   {job.status === "paused" || job.status === "error" ? (
                     <Button
                       variant="ghost"
@@ -171,11 +193,13 @@ export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
+              {confirmAction?.type === "runNow" && t("runNowConfirm")}
               {confirmAction?.type === "activate" && t("activateConfirm")}
               {confirmAction?.type === "pause" && t("pauseConfirm")}
               {confirmAction?.type === "delete" && t("deleteConfirm")}
             </DialogTitle>
             <DialogDescription>
+              {confirmAction?.type === "runNow" && t("runNowDescription")}
               {confirmAction?.type === "activate" && t("activateDescription")}
               {confirmAction?.type === "pause" && t("pauseDescription")}
               {confirmAction?.type === "delete" && t("deleteDescription")}
@@ -187,14 +211,16 @@ export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
               onClick={() => setConfirmAction(null)}
               disabled={loading}
             >
-              {t("Common.cancel", { defaultValue: "Cancel" })}
+              {tCommon("cancel")}
             </Button>
             <Button
               variant={confirmAction?.type === "delete" ? "destructive" : "default"}
               disabled={loading}
               onClick={() => {
                 if (!confirmAction) return;
-                if (confirmAction.type === "delete") {
+                if (confirmAction.type === "runNow") {
+                  handleRunNow(confirmAction.jobId);
+                } else if (confirmAction.type === "delete") {
                   handleDelete(confirmAction.jobId);
                 } else {
                   handleStatusChange(
@@ -205,12 +231,14 @@ export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
               }}
             >
               {loading
-                ? t("deleting")
-                : confirmAction?.type === "activate"
-                  ? t("activate")
-                  : confirmAction?.type === "pause"
-                    ? t("pause")
-                    : t("delete")}
+                ? t("running")
+                : confirmAction?.type === "runNow"
+                  ? t("runNow")
+                  : confirmAction?.type === "activate"
+                    ? t("activate")
+                    : confirmAction?.type === "pause"
+                      ? t("pause")
+                      : t("delete")}
             </Button>
           </DialogFooter>
         </DialogContent>

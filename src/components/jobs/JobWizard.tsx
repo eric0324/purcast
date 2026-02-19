@@ -92,9 +92,9 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
   const [customPrompt, setCustomPrompt] = useState(
     (initialData?.generationConfig as { customPrompt?: string })?.customPrompt || ""
   );
-  const [voiceId, setVoiceId] = useState(
-    (initialData?.generationConfig as { voiceId?: string })?.voiceId || ""
-  );
+  const initVoices = (initialData?.generationConfig as { voices?: Record<string, string> })?.voices || {};
+  const [voiceAId, setVoiceAId] = useState(initVoices["A"] || "");
+  const [voiceBId, setVoiceBId] = useState(initVoices["B"] || "");
   const [maxArticles, setMaxArticles] = useState(
     (initialData?.generationConfig as { maxArticles?: number })?.maxArticles ?? 5
   );
@@ -174,7 +174,10 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
       },
       generationConfig: {
         stylePreset,
-        voiceId: voiceId || undefined,
+        voices: {
+          ...(voiceAId ? { A: voiceAId } : {}),
+          ...(voiceBId ? { B: voiceBId } : {}),
+        },
         maxArticles,
         targetMinutes,
         ...(customPrompt ? { customPrompt } : {}),
@@ -473,20 +476,37 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
                 placeholder={t("customPromptPlaceholder")}
               />
             </div>
-            <div>
-              <Label>{t("voiceSelect")}</Label>
-              <select
-                className="mt-1 block w-full rounded-md border px-3 py-2 text-sm"
-                value={voiceId}
-                onChange={(e) => setVoiceId(e.target.value)}
-              >
-                <option value="">Default</option>
-                {voices.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.name}
-                  </option>
-                ))}
-              </select>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>{t("voiceA")}</Label>
+                <select
+                  className="mt-1 block w-full rounded-md border px-3 py-2 text-sm"
+                  value={voiceAId}
+                  onChange={(e) => setVoiceAId(e.target.value)}
+                >
+                  <option value="">{t("defaultVoice")}</option>
+                  {voices.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label>{t("voiceB")}</Label>
+                <select
+                  className="mt-1 block w-full rounded-md border px-3 py-2 text-sm"
+                  value={voiceBId}
+                  onChange={(e) => setVoiceBId(e.target.value)}
+                >
+                  <option value="">{t("defaultVoice")}</option>
+                  {voices.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="flex gap-4">
               <div>

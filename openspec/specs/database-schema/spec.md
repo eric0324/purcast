@@ -1,49 +1,79 @@
 ## ADDED Requirements
 
-### Requirement: Users table
-The system SHALL maintain a `users` table storing user account information with the following columns:
+### Requirement: Jobs table
+The system SHALL maintain a `jobs` table storing automated Job configurations with the following columns:
 - `id` (UUID, primary key, default gen_random_uuid())
-- `email` (text, not null, unique)
-- `password_hash` (text, nullable — null for OAuth-only users)
-- `google_id` (text, nullable, unique — for Google OAuth users)
-- `name` (text, nullable)
-- `plan` (text, not null, default 'free', enum: 'free' | 'pro')
-- `newebpay_customer_id` (text, nullable)
-- `subscription_end_date` (timestamptz, nullable — for tracking when Pro expires after cancellation)
+- `user_id` (UUID, not null, foreign key → users.id, on delete cascade)
+- `name` (text, not null)
+- `status` (text, not null, default 'paused', enum: 'active' | 'paused' | 'error')
+- `sources` (jsonb, not null) — array of source configs
+- `schedule` (jsonb, not null) — schedule configuration
+- `filter_config` (jsonb, not null, default '{}') — keyword and AI filter settings
+- `generation_config` (jsonb, not null) — style, voice, max articles, target duration
+- `output_config` (jsonb, not null) — array of output channel configs
+- `next_run_at` (timestamptz, nullable)
+- `last_run_at` (timestamptz, nullable)
 - `created_at` (timestamptz, not null, default now())
 - `updated_at` (timestamptz, not null, default now())
 
-#### Scenario: User record created on signup
-- **WHEN** a new user registers via email/password or Google OAuth
-- **THEN** a corresponding row SHALL be inserted into the `users` table with plan='free'
+#### Scenario: Job record created
+- **WHEN** a user creates a new automated Job
+- **THEN** a row SHALL be inserted into `jobs` with status='paused' and next_run_at calculated from the schedule
 
-#### Scenario: OAuth user has no password
-- **WHEN** a user registers via Google OAuth
-- **THEN** the password_hash SHALL be null and google_id SHALL contain the Google user ID
-
-### Requirement: Voices table
-The system SHALL maintain a `voices` table storing cloned voice information with the following columns:
-- `id` (UUID, primary key, default gen_random_uuid())
-- `user_id` (UUID, not null, foreign key → users.id, on delete cascade)
-- `elevenlabs_voice_id` (text, not null)
-- `name` (text, not null)
-- `sample_url` (text, nullable)
-- `created_at` (timestamptz, not null, default now())
-
-#### Scenario: Voice record created after cloning
-- **WHEN** a user successfully clones their voice via ElevenLabs API
-- **THEN** a row SHALL be inserted into `voices` with the returned voice_id, user-provided name, and optional sample audio URL
-
-#### Scenario: Voice records cascade on user deletion
+#### Scenario: Job records cascade on user deletion
 - **WHEN** a user account is deleted
-- **THEN** all associated voice records SHALL be automatically deleted
+- **THEN** all associated Job records SHALL be automatically deleted
+
+### Requirement: Job runs table
+The system SHALL maintain a `job_runs` table tracking each execution of an automated Job with the following columns:
+- `id` (UUID, primary key, default gen_random_uuid())
+- `job_id` (UUID, not null, foreign key → jobs.id, on delete cascade)
+- `status` (text, not null, default 'pending', enum: 'pending' | 'fetching' | 'filtering' | 'generating_script' | 'generating_audio' | 'publishing' | 'completed' | 'failed' | 'skipped')
+- `articles_found` (integer, not null, default 0)
+- `articles_selected` (integer, not null, default 0)
+- `selected_articles` (jsonb, nullable) — array of { title, url, reason }
+- `podcast_id` (UUID, nullable, foreign key → podcasts.id, on delete set null)
+- `error_message` (text, nullable)
+- `started_at` (timestamptz, not null, default now())
+- `completed_at` (timestamptz, nullable)
+
+#### Scenario: Job run record created on execution start
+- **WHEN** the worker begins executing a Job
+- **THEN** a row SHALL be inserted into `job_runs` with status='pending' and started_at=now()
+
+#### Scenario: Job run records cascade on Job deletion
+- **WHEN** a Job is deleted
+- **THEN** all associated JobRun records SHALL be automatically deleted
+
+### Requirement: Job articles table
+The system SHALL maintain a `job_articles` table for deduplication tracking with the following columns:
+- `id` (UUID, primary key, default gen_random_uuid())
+- `job_id` (UUID, not null, foreign key → jobs.id, on delete cascade)
+- `url` (text, not null)
+- `title` (text, not null)
+- `fetched_at` (timestamptz, not null, default now())
+- Unique constraint on (job_id, url)
+
+#### Scenario: Article recorded after processing
+- **WHEN** a Job run successfully processes articles
+- **THEN** records SHALL be inserted into `job_articles` for each selected article
+
+#### Scenario: Duplicate article prevented
+- **WHEN** an article with the same URL has already been recorded for the same Job
+- **THEN** the unique constraint SHALL prevent duplicate insertion
+
+#### Scenario: Job articles cascade on Job deletion
+- **WHEN** a Job is deleted
+- **THEN** all associated JobArticle records SHALL be automatically deleted
+
+## MODIFIED Requirements
 
 ### Requirement: Podcasts table
 The system SHALL maintain a `podcasts` table storing generated podcast records with the following columns:
 - `id` (UUID, primary key, default gen_random_uuid())
 - `user_id` (UUID, not null, foreign key → users.id, on delete cascade)
 - `title` (text, not null)
-- `source_type` (text, not null, enum: 'text' | 'url')
+- `source_type` (text, not null, enum: 'text' | 'url' | 'job')
 - `source_content` (text, not null)
 - `source_url` (text, nullable)
 - `script` (jsonb, nullable)
@@ -51,12 +81,17 @@ The system SHALL maintain a `podcasts` table storing generated podcast records w
 - `duration` (integer, nullable, in seconds)
 - `status` (text, not null, default 'pending', enum: 'pending' | 'generating_script' | 'script_ready' | 'generating_audio' | 'completed' | 'failed')
 - `error_message` (text, nullable)
+- `job_run_id` (UUID, nullable, foreign key → job_runs.id, on delete set null)
 - `created_at` (timestamptz, not null, default now())
 - `updated_at` (timestamptz, not null, default now())
 
 #### Scenario: Podcast record created on generation start
 - **WHEN** a user submits content for podcast generation
 - **THEN** a row SHALL be inserted with status='pending'
+
+#### Scenario: Podcast created by Job
+- **WHEN** a Job run generates a podcast
+- **THEN** a row SHALL be inserted with source_type='job', source_content containing aggregated article summaries, and job_run_id referencing the JobRun
 
 #### Scenario: Podcast status progression with script preview
 - **WHEN** the generation pipeline progresses
@@ -66,25 +101,9 @@ The system SHALL maintain a `podcasts` table storing generated podcast records w
 - **WHEN** any step fails
 - **THEN** the status SHALL be set to 'failed' and error_message SHALL contain the failure reason
 
-### Requirement: Usage table
-The system SHALL maintain a `usage` table tracking monthly generation counts with the following columns:
-- `id` (UUID, primary key, default gen_random_uuid())
-- `user_id` (UUID, not null, foreign key → users.id, on delete cascade)
-- `month` (text, not null, format: 'YYYY-MM')
-- `generation_count` (integer, not null, default 0)
-- Unique constraint on (user_id, month)
-
-#### Scenario: Usage record created on first generation of the month
-- **WHEN** a user generates their first podcast in a given month
-- **THEN** a usage row SHALL be created with generation_count=1
-
-#### Scenario: Usage count incremented on generation
-- **WHEN** a user generates a podcast and a usage row already exists
-- **THEN** the generation_count SHALL be incremented by 1
-
 ### Requirement: Updated_at auto-update trigger
-The system SHALL automatically update the `updated_at` column whenever a row in `users` or `podcasts` is modified.
+The system SHALL automatically update the `updated_at` column whenever a row in `users`, `podcasts`, or `jobs` is modified.
 
 #### Scenario: Timestamp updated on row modification
-- **WHEN** any column in a `users` or `podcasts` row is updated
+- **WHEN** any column in a `users`, `podcasts`, or `jobs` row is updated
 - **THEN** the `updated_at` column SHALL be set to the current timestamp automatically via database trigger
