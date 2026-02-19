@@ -1,10 +1,10 @@
 ## Why
 
-Landing Page 是用戶接觸 Podify 的第一個畫面，也是轉換率的關鍵。需要清楚傳達產品價值（「把任何文字內容變成 Podcast — 用你自己的聲音」）、展示功能、呈現定價方案，並引導用戶註冊試用。（參考 PRD §11 Week 4 交付物）
+Landing Page 是用戶接觸 PurCast 的第一個畫面，也是轉換率的關鍵。需要清楚傳達產品價值（「把任何文字內容變成 Podcast — 用你自己的聲音」）、展示功能、呈現定價方案，並引導用戶註冊試用。（參考 PRD §11 Week 4 交付物）
 
 ## What Changes
 
-- 設計並實作 Podify Landing Page，包含：
+- 設計並實作 PurCast Landing Page，包含：
   - Hero Section：標語、產品簡介、CTA 按鈕（「開始使用」）
   - 功能展示區：內容輸入、AI 對話生成、Voice Cloning 三大賣點
   - 使用流程展示：3 步驟視覺化（貼入內容 → 選擇聲音 → 生成 Podcast）

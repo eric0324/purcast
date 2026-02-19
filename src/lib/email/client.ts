@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@podify.app";
+const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@purcast.com";
 
 export async function sendPasswordResetEmail(
   to: string,
@@ -22,7 +22,7 @@ export async function sendPasswordResetEmail(
   const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${resetToken}`;
 
   await transporter.sendMail({
-    from: `"Podify" <${FROM_EMAIL}>`,
+    from: `"PurCast" <${FROM_EMAIL}>`,
     to,
     subject: t("subject"),
     html: `

@@ -35,7 +35,7 @@ export const webExtractor: ContentExtractor = {
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         headers: {
           "User-Agent":
-            "Mozilla/5.0 (compatible; Podify/1.0; +https://podify.app)",
+            "Mozilla/5.0 (compatible; PurCast/1.0; +https://purcast.com)",
         },
       });
     } catch (err) {

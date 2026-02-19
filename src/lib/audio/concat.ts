@@ -15,7 +15,7 @@ export async function concatAudioSegments(
   segments: Buffer[]
 ): Promise<Buffer> {
   const sessionId = randomUUID();
-  const tmpDir = `/tmp/podify-${sessionId}`;
+  const tmpDir = `/tmp/purcast-${sessionId}`;
   mkdirSync(tmpDir, { recursive: true });
 
   const segmentPaths: string[] = [];

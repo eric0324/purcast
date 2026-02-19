@@ -6,7 +6,6 @@ CREATE TABLE "users" (
     "google_id" TEXT,
     "name" TEXT,
     "plan" TEXT NOT NULL DEFAULT 'free',
-    "newebpay_customer_id" TEXT,
     "subscription_end_date" TIMESTAMPTZ,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,

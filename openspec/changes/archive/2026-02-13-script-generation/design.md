@@ -1,6 +1,6 @@
 ## Context
 
-腳本生成是 Podify 的核心 AI 能力——將文字內容轉化為自然的 Host A / Host B 雙人對話。這個模組接收 content-input 的輸出(純文字),透過 Claude API 產生結構化對話腳本,供下游 TTS 模組分段合成。
+腳本生成是 PurCast 的核心 AI 能力——將文字內容轉化為自然的 Host A / Host B 雙人對話。這個模組接收 content-input 的輸出(純文字),透過 Claude API 產生結構化對話腳本,供下游 TTS 模組分段合成。
 
 對話品質直接決定最終 Podcast 的聽感,是用戶是否願意付費的關鍵。
 

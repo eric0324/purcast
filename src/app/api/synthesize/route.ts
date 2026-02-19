@@ -109,7 +109,7 @@ async function processAudioSynthesis(
     const finalAudio = await concatAudioSegments(segments);
 
     // Get duration via temp file
-    const tmpPath = `/tmp/podify-dur-${randomUUID()}.mp3`;
+    const tmpPath = `/tmp/purcast-dur-${randomUUID()}.mp3`;
     writeFileSync(tmpPath, finalAudio);
     let duration: number;
     try {

@@ -15,5 +15,11 @@ export async function getCurrentUser() {
     where: { id: payload.userId },
   });
 
+  // User was deleted (e.g. DB reset) but JWT is still valid — clear stale cookie
+  if (!user) {
+    cookieStore.delete(COOKIE_NAME);
+    return null;
+  }
+
   return user;
 }

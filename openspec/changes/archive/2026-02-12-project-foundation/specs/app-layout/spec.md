@@ -1,11 +1,11 @@
 ## ADDED Requirements
 
 ### Requirement: Root layout with metadata
-The system SHALL provide a root layout (`app/layout.tsx`) that includes global metadata (title: "Podify", description), font configuration, and Tailwind CSS setup.
+The system SHALL provide a root layout (`app/layout.tsx`) that includes global metadata (title: "PurCast", description), font configuration, and Tailwind CSS setup.
 
 #### Scenario: Page renders with correct metadata
 - **WHEN** any page is loaded
-- **THEN** the HTML document SHALL include the site title "Podify" and appropriate meta description
+- **THEN** the HTML document SHALL include the site title "PurCast" and appropriate meta description
 
 #### Scenario: Global styles applied
 - **WHEN** any page is rendered
@@ -30,7 +30,7 @@ The system SHALL provide a layout for the `(dashboard)` route group with header 
 - **THEN** the sidebar SHALL display navigation links: 生成 Podcast, 生成歷史, 聲音管理, 設定
 
 ### Requirement: Header component
-The system SHALL provide a header component displaying the Podify logo, current user info, and a user dropdown menu.
+The system SHALL provide a header component displaying the PurCast logo, current user info, and a user dropdown menu.
 
 #### Scenario: Header shows user email
 - **WHEN** an authenticated user views any dashboard page

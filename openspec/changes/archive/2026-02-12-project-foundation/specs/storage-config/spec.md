@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: R2 bucket configuration
-The system SHALL use a Cloudflare R2 bucket named `podify-audio` for storing all generated podcast audio files and voice clone samples.
+The system SHALL use a Cloudflare R2 bucket named `purcast-audio` for storing all generated podcast audio files and voice clone samples.
 
 #### Scenario: Bucket accessible via S3-compatible API
 - **WHEN** the application connects to R2

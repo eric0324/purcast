@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { signJWT } from "./jwt";
 
-const COOKIE_NAME = "podify_token";
+const COOKIE_NAME = "purcast_token";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export async function setAuthCookie(userId: string, email: string) {

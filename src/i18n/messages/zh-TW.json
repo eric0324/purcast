@@ -7,12 +7,12 @@
     "email": "Email"
   },
   "Metadata": {
-    "title": "Podify",
+    "title": "PurCast",
     "description": "把任何文字內容變成 Podcast — 用你自己的聲音。AI 驅動的雙人對話 Podcast 生成平台。"
   },
   "Auth": {
     "login": {
-      "title": "登入 Podify",
+      "title": "登入 PurCast",
       "description": "選擇登入方式以繼續",
       "googleButton": "使用 Google 帳號登入",
       "googleNotReady": "Google 登入尚未設定，請使用 Email/密碼登入",
@@ -71,9 +71,13 @@
       "usage": "{used} / {limit} 集"
     },
     "sidebar": {
-      "createPodcast": "生成 Podcast",
-      "history": "生成歷史",
-      "voices": "聲音管理"
+      "podcastSection": "Podcast",
+      "singleGenerate": "單次生成",
+      "automatedJobs": "自動排程",
+      "history": "歷史紀錄",
+      "managementSection": "管理",
+      "voices": "角色管理",
+      "usageLabel": "本月額度"
     },
     "languageSwitcher": {
       "label": "語言",
@@ -105,32 +109,32 @@
     }
   },
   "Voices": {
-    "title": "聲音管理",
-    "empty": "還沒有複製聲音",
-    "emptyDescription": "上傳一段你的聲音樣本，開始用自己的聲音生成 Podcast",
-    "locked": "Voice Clone 是 Pro 方案功能",
-    "lockedDescription": "升級至 Pro 方案即可上傳並使用你自己的聲音。",
+    "title": "角色管理",
+    "empty": "還沒有建立角色",
+    "emptyDescription": "上傳一段聲音樣本，建立你的專屬角色來生成 Podcast",
+    "locked": "自訂角色是 Pro 方案功能",
+    "lockedDescription": "升級至 Pro 方案即可建立並使用自訂角色。",
     "upgradeButton": "即將推出",
-    "uploadVoice": "上傳聲音",
-    "deleteTitle": "確定要刪除此聲音？",
-    "deleteDescription": "此操作無法復原。刪除後將無法再使用此聲音生成 Podcast。",
+    "uploadVoice": "建立角色",
+    "deleteTitle": "確定要刪除此角色？",
+    "deleteDescription": "此操作無法復原。刪除後將無法再使用此角色生成 Podcast。",
     "clickToRename": "點擊以重新命名",
     "deleting": "刪除中...",
     "confirmDelete": "確定刪除",
     "upload": {
-      "title": "上傳聲音樣本",
-      "description": "上傳一段你的聲音錄音，用來複製你的聲音。建議錄製 1-3 分鐘清晰的獨白，避免背景噪音。",
-      "nameLabel": "聲音名稱",
-      "namePlaceholder": "例如：我的聲音",
+      "title": "建立角色",
+      "description": "上傳一段聲音錄音來建立角色。建議錄製 1-3 分鐘清晰的獨白，避免背景噪音。",
+      "nameLabel": "角色名稱",
+      "namePlaceholder": "例如：主持人小明",
       "fileLabel": "音檔（MP3/WAV/M4A，最大 25MB）",
       "fileSizeError": "檔案大小不能超過 {maxSize}MB",
       "uploading": "上傳中...",
-      "cloning": "複製中...",
+      "cloning": "建立中...",
       "done": "完成！",
-      "success": "聲音複製完成！",
-      "submit": "上傳並開始複製",
-      "uploadFailed": "上傳失敗",
-      "fallbackError": "上傳失敗，請稍後再試"
+      "success": "角色建立完成！",
+      "submit": "上傳並建立角色",
+      "uploadFailed": "建立失敗",
+      "fallbackError": "建立失敗，請稍後再試"
     }
   },
   "Settings": {
@@ -217,6 +221,134 @@
     },
     "fallbackError": "儲存失敗，請稍後再試"
   },
+  "Jobs": {
+    "title": "自動排程",
+    "description": "設定來源、排程和輸出，自動生成 Podcast",
+    "empty": "還沒有建立排程",
+    "emptyDescription": "建立你的第一個自動排程，讓 Podcast 自動生成。",
+    "createNew": "建立排程",
+    "status": {
+      "active": "啟用中",
+      "paused": "已暫停",
+      "error": "異常"
+    },
+    "lastRun": "上次執行",
+    "nextRun": "下次執行",
+    "neverRun": "尚未執行",
+    "activate": "啟用",
+    "pause": "暫停",
+    "delete": "刪除",
+    "deleteConfirm": "確定要刪除此排程？",
+    "deleteDescription": "刪除後無法復原，相關的執行紀錄也會一併刪除。",
+    "deleting": "刪除中...",
+    "activateConfirm": "確定要啟用此排程？",
+    "activateDescription": "啟用後將按照設定的時間自動執行。",
+    "pauseConfirm": "確定要暫停此排程？",
+    "pauseDescription": "暫停後不會再自動執行，手動啟用後繼續。",
+    "wizard": {
+      "step1": "基本設定",
+      "step2": "排程與篩選",
+      "step3": "生成設定",
+      "step4": "輸出設定",
+      "step5": "確認建立",
+      "nameLabel": "排程名稱",
+      "namePlaceholder": "例如：每日科技新聞",
+      "sourcesLabel": "來源",
+      "addSource": "新增來源",
+      "sourceType": "類型",
+      "sourceUrl": "網址",
+      "sourceRss": "RSS Feed",
+      "sourceUrlMonitor": "網址監控",
+      "scheduleMode": "排程模式",
+      "daily": "每天",
+      "weekly": "每週",
+      "time": "執行時間",
+      "timezone": "時區",
+      "weekday": "星期",
+      "weekdays": {
+        "0": "日",
+        "1": "一",
+        "2": "二",
+        "3": "三",
+        "4": "四",
+        "5": "五",
+        "6": "六"
+      },
+      "includeKeywords": "包含關鍵字",
+      "excludeKeywords": "排除關鍵字",
+      "keywordPlaceholder": "輸入後按 Enter",
+      "aiFilter": "AI 篩選提示",
+      "aiFilterPlaceholder": "例如：只選擇與 AI 和機器學習相關的文章",
+      "stylePreset": "風格預設",
+      "stylePresets": {
+        "news_brief": "新聞簡報",
+        "casual_chat": "輕鬆閒聊",
+        "deep_analysis": "深度分析",
+        "talk_show": "脫口秀"
+      },
+      "customPrompt": "自訂提示",
+      "customPromptPlaceholder": "額外的生成指示...",
+      "voiceSelect": "選擇聲音",
+      "maxArticles": "最大文章數",
+      "targetMinutes": "目標時長（分鐘）",
+      "outputChannels": "輸出頻道",
+      "addTelegram": "連結 Telegram",
+      "telegramConnected": "Telegram 已連結",
+      "telegramVerifyHint": "請將以下驗證碼傳送給 PurCast Bot",
+      "telegramPolling": "等待驗證...",
+      "addLine": "新增 LINE",
+      "lineTokenLabel": "Channel Access Token",
+      "outputFormat": "輸出格式",
+      "formatAudio": "音檔",
+      "formatLink": "連結",
+      "formatBoth": "音檔 + 連結",
+      "review": "檢閱設定",
+      "back": "上一步",
+      "next": "下一步",
+      "create": "建立排程",
+      "creating": "建立中...",
+      "update": "更新排程",
+      "updating": "更新中..."
+    },
+    "detail": {
+      "backToJobs": "返回排程列表",
+      "editJob": "編輯排程",
+      "config": "排程設定",
+      "sources": "來源",
+      "schedule": "排程",
+      "filters": "篩選",
+      "generation": "生成設定",
+      "outputs": "輸出頻道",
+      "runHistory": "執行紀錄",
+      "noRuns": "尚無執行紀錄",
+      "articlesFound": "發現 {count} 篇",
+      "articlesSelected": "選取 {count} 篇",
+      "viewRun": "查看詳情"
+    },
+    "run": {
+      "backToJob": "返回排程",
+      "status": "狀態",
+      "startedAt": "開始時間",
+      "completedAt": "完成時間",
+      "duration": "耗時",
+      "selectedArticles": "選取的文章",
+      "articleTitle": "標題",
+      "articleReason": "選取原因",
+      "viewPodcast": "查看 Podcast",
+      "errorMessage": "錯誤訊息",
+      "statusLabels": {
+        "pending": "等待中",
+        "fetching": "抓取來源",
+        "filtering": "篩選文章",
+        "generating_script": "生成腳本",
+        "generating_audio": "生成音檔",
+        "publishing": "發佈中",
+        "completed": "已完成",
+        "failed": "失敗",
+        "skipped": "已跳過"
+      }
+    }
+  },
   "Errors": {
     "auth": {
       "emailPasswordRequired": "Email 和密碼為必填",
@@ -265,12 +397,12 @@
       "saveFailed": "儲存失敗，請稍後再試"
     },
     "voice": {
-      "nameRequired": "請輸入聲音名稱",
+      "nameRequired": "請輸入角色名稱",
       "fileRequired": "請上傳音檔",
       "fileTooLarge": "檔案大小不能超過 25MB",
       "unsupportedFormat": "不支援的音檔格式，請使用 MP3、WAV 或 M4A",
-      "cloneFailed": "聲音複製失敗，請稍後再試",
-      "notFound": "找不到該聲音",
+      "cloneFailed": "角色建立失敗，請稍後再試",
+      "notFound": "找不到該角色",
       "updateFailed": "更新失敗，請稍後再試",
       "deleteFailed": "刪除失敗，請稍後再試"
     },
@@ -284,15 +416,29 @@
       "limitReached": "本月生成額度已用完",
       "fetchFailed": "無法取得用量資訊"
     },
+    "jobs": {
+      "missingRequiredFields": "請填寫所有必填欄位",
+      "sourcesRequired": "至少需要一個來源",
+      "invalidSource": "來源設定不完整",
+      "invalidSourceType": "不支援的來源類型",
+      "invalidSourceUrl": "來源網址格式不正確",
+      "invalidSchedule": "排程設定不完整",
+      "invalidGenerationConfig": "生成設定不完整",
+      "outputRequired": "至少需要一個輸出頻道",
+      "notFound": "找不到該排程",
+      "invalidStatus": "無效的狀態",
+      "quotaExhausted": "本月額度已用完，無法啟用",
+      "runNotFound": "找不到該執行紀錄"
+    },
     "feature": {
       "proOnly": "此功能僅限 Pro 方案使用"
     }
   },
   "Email": {
     "resetPassword": {
-      "subject": "重設您的 Podify 密碼",
+      "subject": "重設您的 PurCast 密碼",
       "heading": "重設密碼",
-      "body": "您收到這封信是因為有人申請重設您的 Podify 帳號密碼。",
+      "body": "您收到這封信是因為有人申請重設您的 PurCast 帳號密碼。",
       "instruction": "請點擊下方連結設定新密碼（連結將於 1 小時後失效）：",
       "buttonText": "重設密碼",
       "ignore": "如果您沒有申請重設密碼，請忽略此信。"
@@ -422,7 +568,7 @@
       "company": "公司",
       "about": "關於我們",
       "contact": "聯絡我們",
-      "copyright": "© {year} Podify"
+      "copyright": "© {year} PurCast"
     }
   }
 }

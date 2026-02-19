@@ -21,9 +21,9 @@
 
 - [ ] 4.1 在 VPS 上安裝 ffmpeg：執行 `apt update && apt install -y ffmpeg`。驗收：`ffmpeg -version` 回傳版本資訊。
 - [ ] 4.2 安裝 `fluent-ffmpeg`（不需安裝 @ffmpeg-installer/ffmpeg）。建立 `src/lib/audio/concat.ts`，設定 ffmpeg 路徑為系統路徑。驗收：套件安裝成功，可呼叫系統 ffmpeg。
-- [ ] 4.3 實作 `concatSegments(segments: Buffer[], podcastId: string)`：建立 `/tmp/podify-audio-{podcastId}/` 目錄暫存音檔，將多段音檔拼接為一個 MP3，段間插入 400ms 靜音。驗收：輸出完整 MP3 可正常播放。
+- [ ] 4.3 實作 `concatSegments(segments: Buffer[], podcastId: string)`：建立 `/tmp/purcast-audio-{podcastId}/` 目錄暫存音檔，將多段音檔拼接為一個 MP3，段間插入 400ms 靜音。驗收：輸出完整 MP3 可正常播放。
 - [ ] 4.4 實作 `getAudioDuration(buffer: Buffer)`：使用 ffprobe 取得音檔時長（秒）。驗收：回傳正確時長。
-- [ ] 4.5 實作暫存檔清理邏輯：拼接完成（無論成功失敗）後刪除 `/tmp/podify-audio-{podcastId}/` 整個目錄。驗收：處理後 temp 目錄無殘留。
+- [ ] 4.5 實作暫存檔清理邏輯：拼接完成（無論成功失敗）後刪除 `/tmp/purcast-audio-{podcastId}/` 整個目錄。驗收：處理後 temp 目錄無殘留。
 
 ## 5. 完整合成流程（VPS 直接處理）[PRD §6.2]
 

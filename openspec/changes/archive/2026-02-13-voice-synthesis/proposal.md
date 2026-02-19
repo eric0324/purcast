@@ -1,6 +1,6 @@
 ## Why
 
-Voice Cloning 是 Podify 的核心差異化特色——讓用戶用自己的聲音做 Podcast，而非千篇一律的 AI 預設聲音。這是驅動 Free → Pro 轉換的關鍵功能。語音合成模組負責將對話腳本轉化為實際音檔，包含 Voice Cloning 流程和 TTS 合成。（參考 PRD §4.1 ③）
+Voice Cloning 是 PurCast 的核心差異化特色——讓用戶用自己的聲音做 Podcast，而非千篇一律的 AI 預設聲音。這是驅動 Free → Pro 轉換的關鍵功能。語音合成模組負責將對話腳本轉化為實際音檔，包含 Voice Cloning 流程和 TTS 合成。（參考 PRD §4.1 ③）
 
 ## What Changes
 

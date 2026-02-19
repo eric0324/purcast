@@ -1,6 +1,6 @@
 ## Why
 
-Podify 採用 Free/Pro 雙層訂閱制，需要計費系統來管理訂閱、追蹤用量、控制功能存取。這是商業模式驗證的核心——透過 Voice Cloning 功能驅動 Free → Pro 的轉換率。（參考 PRD §4.1 ⑤、§8 Pricing）
+PurCast 採用 Free/Pro 雙層訂閱制，需要計費系統來管理訂閱、追蹤用量、控制功能存取。這是商業模式驗證的核心——透過 Voice Cloning 功能驅動 Free → Pro 的轉換率。（參考 PRD §4.1 ⑤、§8 Pricing）
 
 ## What Changes
 

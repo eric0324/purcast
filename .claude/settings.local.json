@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(bunx vitest run:*)",
+      "Bash(npx vitest run:*)",
+      "WebFetch(domain:www.namecheap.com)",
+      "WebFetch(domain:www.whois.com)",
+      "WebFetch(domain:who.is)",
+      "WebFetch(domain:lookup.icann.org)",
+      "Bash(whois:*)",
+      "Bash(for d in meowpod.com purcast.com catcaster.com nyapod.com nyacast.com nekopod.com nekocast.com miaocast.com miaopod.com whiscast.com purrly.com castakit.com kitcast.com)",
+      "Bash(do echo -n \"$d: \")",
+      "Bash(done)",
+      "Bash(bun run test:run:*)"
     ]
   }
 }

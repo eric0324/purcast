@@ -26,10 +26,10 @@
 
 ## 5. App Layout 與共用元件 [PRD §5.1]
 
-- [x] 5.1 建立 Root Layout（`src/app/layout.tsx`）：設定 metadata（title: "Podify"）、字體、Tailwind CSS。驗收：所有頁面繼承正確的 metadata。
+- [x] 5.1 建立 Root Layout（`src/app/layout.tsx`）：設定 metadata（title: "PurCast"）、字體、Tailwind CSS。驗收：所有頁面繼承正確的 metadata。
 - [x] 5.2 建立 Auth Route Group Layout（`src/app/(auth)/layout.tsx`）：置中卡片式佈局。驗收：`/login` 頁面以置中卡片呈現。
 - [x] 5.3 建立 Dashboard Route Group Layout（`src/app/(dashboard)/layout.tsx`）：Header + Sidebar + Main Content。驗收：Dashboard 頁面正確顯示。
-- [x] 5.4 建立 Header 元件（`src/components/layout/header.tsx`）：Podify logo、用戶資訊 dropdown（設定、登出）。驗收：正確顯示。
+- [x] 5.4 建立 Header 元件（`src/components/layout/header.tsx`）：PurCast logo、用戶資訊 dropdown（設定、登出）。驗收：正確顯示。
 - [x] 5.5 建立 Sidebar 元件（`src/components/layout/sidebar.tsx`）：導覽連結 + 響應式 hamburger menu。驗收：桌面顯示 sidebar，手機顯示 hamburger。
 
 ## 6. Vultr VPS + PM2 部署設定

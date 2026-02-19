@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "@/i18n/routing";
 
-const COOKIE_NAME = "podify_token";
+const COOKIE_NAME = "purcast_token";
 const AUTH_PAGES = ["/login", "/register", "/forgot-password", "/reset-password"];
 
 const intlMiddleware = createMiddleware(routing);

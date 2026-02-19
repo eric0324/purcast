@@ -4,9 +4,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: podify
-      POSTGRES_USER: podify
-      POSTGRES_PASSWORD: podify
+      POSTGRES_DB: purcast
+      POSTGRES_USER: purcast
+      POSTGRES_PASSWORD: purcast
     volumes:
       - pgdata:/var/lib/postgresql/data
 

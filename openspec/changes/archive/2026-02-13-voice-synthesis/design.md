@@ -1,6 +1,6 @@
 ## Context
 
-語音合成是 Podify 最核心的差異化環節——Voice Cloning 讓用戶能用自己的聲音做 Podcast。此模組接收結構化對話腳本，分段調用 TTS API 生成音檔，再用 ffmpeg 拼接成完整 Podcast。
+語音合成是 PurCast 最核心的差異化環節——Voice Cloning 讓用戶能用自己的聲音做 Podcast。此模組接收結構化對話腳本，分段調用 TTS API 生成音檔，再用 ffmpeg 拼接成完整 Podcast。
 
 這也是成本最高的環節（Pro 用戶單集 $1.20-1.50），以及耗時最長的環節（1-3 分鐘）。
 
@@ -80,7 +80,7 @@ interface TTSProvider {
 
 ### 7. 暫存檔使用 VPS /tmp 目錄
 
-**選擇:** 分段音檔暫存在 `/tmp/podify-audio-{podcastId}/`，拼接完成後刪除
+**選擇:** 分段音檔暫存在 `/tmp/purcast-audio-{podcastId}/`，拼接完成後刪除
 
 **理由:** VPS /tmp 目錄有充足空間；處理完即清理，不佔用長期儲存；簡化檔案管理。
 

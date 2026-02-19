@@ -21,6 +21,7 @@ model User {
   voices   Voice[]
   podcasts Podcast[]
   usage    Usage[]
+  jobs     Job[]
 
   @@map("users")
 }
@@ -42,7 +43,7 @@ model Podcast {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId        String   @map("user_id") @db.Uuid
   title         String
-  sourceType    String   @map("source_type") // 'text' | 'url'
+  sourceType    String   @map("source_type") // 'text' | 'url' | 'job'
   sourceContent String   @map("source_content")
   sourceUrl     String?  @map("source_url")
   script        Json?
@@ -50,10 +51,12 @@ model Podcast {
   duration      Int? // in seconds
   status        String   @default("pending") // 'pending' | 'generating_script' | 'script_ready' | 'generating_audio' | 'completed' | 'failed'
   errorMessage  String?  @map("error_message")
+  jobRunId      String?  @map("job_run_id") @db.Uuid
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobRuns JobRun[]
 
   @@map("podcasts")
 }
@@ -68,6 +71,59 @@ model Usage {
 
   @@unique([userId, month])
   @@map("usage")
+}
+
+model Job {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String    @map("user_id") @db.Uuid
+  name             String
+  status           String    @default("paused") // 'active' | 'paused' | 'error'
+  sources          Json      // [{ type: 'rss' | 'url', url, label? }]
+  schedule         Json      // { mode: 'daily' | 'weekly', time, timezone, weekday? }
+  filterConfig     Json      @default("{}") @map("filter_config") // { includeKeywords, excludeKeywords, aiPrompt? }
+  generationConfig Json      @map("generation_config") // { stylePreset, customPrompt?, voiceId, maxArticles, targetMinutes }
+  outputConfig     Json      @map("output_config") // [{ type: 'telegram' | 'line', config, format }]
+  nextRunAt        DateTime? @map("next_run_at") @db.Timestamptz
+  lastRunAt        DateTime? @map("last_run_at") @db.Timestamptz
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs     JobRun[]
+  articles JobArticle[]
+
+  @@map("jobs")
+}
+
+model JobRun {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobId            String    @map("job_id") @db.Uuid
+  status           String    @default("pending") // 'pending' | 'fetching' | 'filtering' | 'generating_script' | 'generating_audio' | 'publishing' | 'completed' | 'failed' | 'skipped'
+  articlesFound    Int       @default(0) @map("articles_found")
+  articlesSelected Int       @default(0) @map("articles_selected")
+  selectedArticles Json?     @map("selected_articles") // [{ title, url, reason }]
+  podcastId        String?   @map("podcast_id") @db.Uuid
+  errorMessage     String?   @map("error_message")
+  startedAt        DateTime  @default(now()) @map("started_at") @db.Timestamptz
+  completedAt      DateTime? @map("completed_at") @db.Timestamptz
+
+  job     Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  podcast Podcast? @relation(fields: [podcastId], references: [id], onDelete: SetNull)
+
+  @@map("job_runs")
+}
+
+model JobArticle {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobId     String   @map("job_id") @db.Uuid
+  url       String
+  title     String
+  fetchedAt DateTime @default(now()) @map("fetched_at") @db.Timestamptz
+
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, url])
+  @@map("job_articles")
 }
 
 model PasswordResetToken {

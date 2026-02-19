@@ -17,7 +17,7 @@ The system SHALL concatenate multiple audio segments into a single podcast MP3 f
 
 #### Scenario: Use VPS /tmp for temporary storage
 - **WHEN** processing audio segments
-- **THEN** temporary files SHALL be stored in `/tmp/podify-audio-{podcastId}/` on the VPS
+- **THEN** temporary files SHALL be stored in `/tmp/purcast-audio-{podcastId}/` on the VPS
 
 ### Requirement: Audio upload to R2
 The system SHALL upload the completed podcast audio to Cloudflare R2.
@@ -35,7 +35,7 @@ The system SHALL clean up temporary audio segments after concatenation.
 
 #### Scenario: Clean up temp files
 - **WHEN** concatenation completes (success or failure)
-- **THEN** all temporary segment files SHALL be deleted from `/tmp/podify-audio-{podcastId}/`
+- **THEN** all temporary segment files SHALL be deleted from `/tmp/purcast-audio-{podcastId}/`
 
 ### Requirement: Audio processing error handling
 The system SHALL handle ffmpeg processing errors gracefully.

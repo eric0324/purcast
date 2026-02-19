@@ -1,11 +1,11 @@
 ## Context
 
-Landing Page 是用戶接觸 Podify 的第一個畫面，承擔轉換率的關鍵任務。需要在 5 秒內傳達產品價值、展示功能亮點、呈現定價方案，並引導訪客註冊。目標是支撐 MVP 上線後 4 週內 50 人註冊的驗證指標（PRD §10.1）。
+Landing Page 是用戶接觸 PurCast 的第一個畫面，承擔轉換率的關鍵任務。需要在 5 秒內傳達產品價值、展示功能亮點、呈現定價方案，並引導訪客註冊。目標是支撐 MVP 上線後 4 週內 50 人註冊的驗證指標（PRD §10.1）。
 
 ## Goals / Non-Goals
 
 **Goals:**
-- 5 秒內讓訪客理解 Podify 的核心價值
+- 5 秒內讓訪客理解 PurCast 的核心價值
 - 清楚的 CTA 引導訪客註冊
 - 展示 Free/Pro 方案差異促進轉換
 - Demo 試聽區讓訪客體驗成果
@@ -60,7 +60,7 @@ Landing Page 是用戶接觸 Podify 的第一個畫面，承擔轉換率的關�
 
 **選擇:** 使用 `next-intl` 實作中英雙語 Landing Page，右上角語言切換器
 
-**理由:** Podify 支援中英文內容生成，Landing Page 也應同時吸引中英文用戶；`next-intl` 與 Next.js App Router 整合良好，支援 SSG。
+**理由:** PurCast 支援中英文內容生成，Landing Page 也應同時吸引中英文用戶；`next-intl` 與 Next.js App Router 整合良好，支援 SSG。
 
 **實作:**
 - 預設語言：繁體中文
@@ -74,7 +74,7 @@ Landing Page 是用戶接觸 Podify 的第一個畫面，承擔轉換率的關�
 **理由:** 解答潛在用戶的常見疑問，降低註冊門檻；Accordion 節省空間；常見問題也有助於 SEO。
 
 **FAQ 內容（3-5 題）:**
-- Podify 支援哪些語言？
+- PurCast 支援哪些語言？
 - Voice Clone 安全嗎？我的聲音會被如何使用？
 - Free 和 Pro 方案有什麼差別？
 - 生成一集 Podcast 需要多長時間？

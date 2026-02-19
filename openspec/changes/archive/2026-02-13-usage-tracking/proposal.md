@@ -1,6 +1,6 @@
 ## Why
 
-Podify 目前沒有用量限制，任何用戶都可以無限生成 Podcast 和使用 Voice Clone，無法控制 API 成本（Claude + TTS 每集約 NT$3-5）。需要用量追蹤和功能門控來：1) 控制成本風險 2) 建立 Free/Pro 差異化基礎。
+PurCast 目前沒有用量限制，任何用戶都可以無限生成 Podcast 和使用 Voice Clone，無法控制 API 成本（Claude + TTS 每集約 NT$3-5）。需要用量追蹤和功能門控來：1) 控制成本風險 2) 建立 Free/Pro 差異化基礎。
 
 ## What Changes
 

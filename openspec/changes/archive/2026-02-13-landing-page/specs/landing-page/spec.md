@@ -52,7 +52,7 @@ The system SHALL display a footer with essential links.
 
 #### Scenario: Footer content
 - **WHEN** a visitor scrolls to the bottom
-- **THEN** the footer SHALL display: Podify logo, copyright, links to 使用條款 and 隱私政策
+- **THEN** the footer SHALL display: PurCast logo, copyright, links to 使用條款 and 隱私政策
 
 ### Requirement: Responsive design
 The system SHALL be fully responsive across device sizes.

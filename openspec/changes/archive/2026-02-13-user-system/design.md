@@ -1,6 +1,6 @@
 ## Context
 
-用戶系統是 Podify 所有功能的入口。包含驗證登入、聲音管理、生成歷史和內建播放器四個子功能。MVP 需要支援 Google OAuth 和 Email/Password 兩種登入方式,並提供流暢的用戶體驗確保留存率。
+用戶系統是 PurCast 所有功能的入口。包含驗證登入、聲音管理、生成歷史和內建播放器四個子功能。MVP 需要支援 Google OAuth 和 Email/Password 兩種登入方式,並提供流暢的用戶體驗確保留存率。
 
 ## Goals / Non-Goals
 

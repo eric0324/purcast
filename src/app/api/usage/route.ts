@@ -11,7 +11,14 @@ export async function GET() {
 
     const { used, limit, plan } = await checkUsageLimit(user.id);
 
-    return NextResponse.json({ used, limit, plan });
+    return NextResponse.json({
+      used,
+      limit,
+      plan,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+    });
   } catch {
     return NextResponse.json(
       { errorKey: "usage.fetchFailed" },

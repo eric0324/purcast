@@ -1,6 +1,6 @@
 ## Context
 
-Podify 採用 Free/Pro 雙層月訂閱制，需要藍新金流 NewebPay 整合處理付款、用量追蹤控制生成次數、功能門控限制 Voice Clone 存取。這是商業模式驗證的核心——觀察 Free → Pro 轉換率來驗證用戶是否願意為 Voice Clone 付費。
+PurCast 採用 Free/Pro 雙層月訂閱制，需要藍新金流 NewebPay 整合處理付款、用量追蹤控制生成次數、功能門控限制 Voice Clone 存取。這是商業模式驗證的核心——觀察 Free → Pro 轉換率來驗證用戶是否願意為 Voice Clone 付費。
 
 ## Goals / Non-Goals
 

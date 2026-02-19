@@ -26,7 +26,7 @@
 
 ## 6. Footer 與 SEO [PRD §11]
 
-- [x] 6.1 實作 Footer：Podify logo + copyright + 使用條款 / 隱私政策連結。驗收：Footer 顯示正確。
+- [x] 6.1 實作 Footer：PurCast logo + copyright + 使用條款 / 隱私政策連結。驗收：Footer 顯示正確。
 - [x] 6.2 設定 SEO：Open Graph tags（og:title, og:description, og:image）、Twitter Card、structured data。驗收：社群分享時顯示正確預覽。
 
 ## 7. 中英雙語支援

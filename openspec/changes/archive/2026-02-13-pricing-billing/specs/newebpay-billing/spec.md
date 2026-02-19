@@ -13,7 +13,7 @@ The system SHALL integrate NewebPay MPG for Pro plan subscriptions.
   - MerchantID（商店代號）
   - MerchantOrderNo（訂單編號，唯一）
   - Amt（金額：14.99 * 匯率）
-  - ItemDesc（品項：Podify Pro 月訂閱）
+  - ItemDesc（品項：PurCast Pro 月訂閱）
   - Email（用戶 email）
   - ReturnURL（付款完成前端 redirect）
   - NotifyURL（付款結果後端 callback）

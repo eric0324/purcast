@@ -1,6 +1,6 @@
 ## Context
 
-Podify 目前無用量限制，所有用戶可無限生成 Podcast 和使用 Voice Clone。DB 已有 `usage` 表（userId + month + generation_count）和 `users.plan` 欄位（free/pro），但尚未在任何 API 中使用。
+PurCast 目前無用量限制，所有用戶可無限生成 Podcast 和使用 Voice Clone。DB 已有 `usage` 表（userId + month + generation_count）和 `users.plan` 欄位（free/pro），但尚未在任何 API 中使用。
 
 ## Goals / Non-Goals
 

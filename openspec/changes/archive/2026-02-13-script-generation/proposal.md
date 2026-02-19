@@ -1,6 +1,6 @@
 ## Why
 
-將文字內容轉化為自然的雙人對話腳本是 Podify 的核心 AI 能力。相比單人讀稿，雙人對話模式（Host A / Host B）更能吸引聽眾、更具 Podcast 的真實感。透過 Claude API 生成結構化對話腳本，為後續的 TTS 語音合成提供精確的分段輸入。（參考 PRD §4.1 ②）
+將文字內容轉化為自然的雙人對話腳本是 PurCast 的核心 AI 能力。相比單人讀稿，雙人對話模式（Host A / Host B）更能吸引聽眾、更具 Podcast 的真實感。透過 Claude API 生成結構化對話腳本，為後續的 TTS 語音合成提供精確的分段輸入。（參考 PRD §4.1 ②）
 
 ## What Changes
 
