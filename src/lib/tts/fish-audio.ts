@@ -23,6 +23,7 @@ export class FishAudioProvider implements TTSProvider {
         format: "mp3",
         mp3_bitrate: 128,
         latency: "normal",
+        speed: 0.9,
       }),
     });
 

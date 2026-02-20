@@ -8,6 +8,7 @@ import { concatAudioSegments } from "@/lib/audio/concat";
 import { getAudioDuration } from "@/lib/audio/duration";
 import { uploadFile } from "@/lib/r2/utils";
 import { publishToChannels, type PodcastInfo } from "./outputs";
+import { resolveChannels } from "./outputs/resolve";
 import { checkUsageLimit, incrementUsage } from "@/lib/billing/usage";
 import { calculateNextRunAt } from "./schedule";
 import type {
@@ -15,9 +16,10 @@ import type {
   JobSchedule,
   JobFilterConfig,
   JobGenerationConfig,
-  JobOutputConfig,
+  JobChannelBinding,
   SelectedArticle,
 } from "./types";
+import { nanoid } from "nanoid";
 import { writeFileSync, unlinkSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 
@@ -28,7 +30,7 @@ interface JobData {
   schedule: JobSchedule;
   filterConfig: JobFilterConfig;
   generationConfig: JobGenerationConfig;
-  outputConfig: JobOutputConfig[];
+  outputConfig: JobChannelBinding[];
 }
 
 export async function executeJob(jobData: JobData): Promise<void> {
@@ -100,6 +102,7 @@ export async function executeJob(jobData: JobData): Promise<void> {
       stylePreset: jobData.generationConfig.stylePreset,
       customPrompt: jobData.generationConfig.customPrompt,
       targetMinutes: jobData.generationConfig.targetMinutes,
+      outputLanguage: jobData.generationConfig.outputLanguage,
     });
 
     // Step 5: Synthesize audio
@@ -146,6 +149,7 @@ export async function executeJob(jobData: JobData): Promise<void> {
     const sourceContent = filterResult.selectedMeta
       .map((a) => `${a.title}\n${a.url}`)
       .join("\n\n");
+    const shareToken = nanoid(12);
     const podcast = await prisma.podcast.create({
       data: {
         userId: jobData.userId,
@@ -158,6 +162,7 @@ export async function executeJob(jobData: JobData): Promise<void> {
         audioUrl,
         duration,
         jobRunId: run.id,
+        shareToken,
       },
     });
 
@@ -167,7 +172,7 @@ export async function executeJob(jobData: JobData): Promise<void> {
 
     // Step 6: Publish to output channels
     await updateRunStatus(run.id, "publishing");
-    const playbackUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/history/${podcast.id}`;
+    const playbackUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/listen/${podcast.shareToken}`;
 
     const podcastInfo: PodcastInfo = {
       title,
@@ -177,8 +182,9 @@ export async function executeJob(jobData: JobData): Promise<void> {
       durationMs: Math.round(duration * 1000),
     };
 
+    const resolvedOutputs = await resolveChannels(jobData.outputConfig);
     const channelResults = await publishToChannels(
-      jobData.outputConfig,
+      resolvedOutputs,
       podcastInfo
     );
 

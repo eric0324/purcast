@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockGetCurrentUser = vi.hoisted(() => vi.fn());
 const mockGenerateVerificationCode = vi.hoisted(() => vi.fn());
-const mockGetVerifiedChatId = vi.hoisted(() => vi.fn());
+const mockPeekVerifiedChatId = vi.hoisted(() => vi.fn());
 
 vi.mock("@/lib/auth/session", () => ({
   getCurrentUser: mockGetCurrentUser,
@@ -10,7 +10,7 @@ vi.mock("@/lib/auth/session", () => ({
 
 vi.mock("@/lib/jobs/outputs/telegram-verify", () => ({
   generateVerificationCode: mockGenerateVerificationCode,
-  getVerifiedChatId: mockGetVerifiedChatId,
+  peekVerifiedChatId: mockPeekVerifiedChatId,
 }));
 
 import { POST, GET } from "@/app/api/telegram/connect/route";
@@ -53,7 +53,7 @@ describe("GET /api/telegram/connect", () => {
 
   it("returns verified: false when no result yet", async () => {
     mockGetCurrentUser.mockResolvedValue({ id: "user-1", email: "test@test.com" });
-    mockGetVerifiedChatId.mockReturnValue(null);
+    mockPeekVerifiedChatId.mockReturnValue(null);
 
     const res = await GET();
     const data = await res.json();
@@ -65,7 +65,7 @@ describe("GET /api/telegram/connect", () => {
 
   it("returns chatId when verification is complete", async () => {
     mockGetCurrentUser.mockResolvedValue({ id: "user-1", email: "test@test.com" });
-    mockGetVerifiedChatId.mockReturnValue("chat-12345");
+    mockPeekVerifiedChatId.mockReturnValue("chat-12345");
 
     const res = await GET();
     const data = await res.json();

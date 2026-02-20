@@ -105,84 +105,80 @@ export function JobList({ initialJobs }: { initialJobs: JobItem[] }) {
     <>
       <div className="space-y-3">
         {jobs.map((job) => (
-          <Card key={job.id} className="cursor-pointer transition-colors hover:bg-accent/50">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <Link href={`/jobs/${job.id}`}>
+          <Link key={job.id} href={`/jobs/${job.id}`} className="block">
+            <Card className="transition-colors hover:bg-accent/50">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
                   <CardTitle className="text-base">{job.name}</CardTitle>
-                </Link>
-                <span
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium ${statusColor[job.status] || "bg-gray-100"}`}
-                >
-                  {t(`status.${job.status}`)}
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex gap-4">
-                  <span suppressHydrationWarning>
-                    {t("lastRun")}:{" "}
-                    {job.lastRunAt
-                      ? new Date(job.lastRunAt).toLocaleString()
-                      : t("neverRun")}
-                  </span>
-                  <span suppressHydrationWarning>
-                    {t("nextRun")}:{" "}
-                    {job.nextRunAt
-                      ? new Date(job.nextRunAt).toLocaleString()
-                      : "—"}
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${statusColor[job.status] || "bg-gray-100"}`}
+                  >
+                    {t(`status.${job.status}`)}
                   </span>
                 </div>
-                <div className="flex gap-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setConfirmAction({ type: "runNow", jobId: job.id });
-                    }}
-                  >
-                    {t("runNow")}
-                  </Button>
-                  {job.status === "paused" || job.status === "error" ? (
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div className="flex gap-4">
+                    <span suppressHydrationWarning>
+                      {t("lastRun")}:{" "}
+                      {job.lastRunAt
+                        ? new Date(job.lastRunAt).toLocaleString()
+                        : t("neverRun")}
+                    </span>
+                    <span suppressHydrationWarning>
+                      {t("nextRun")}:{" "}
+                      {job.nextRunAt
+                        ? new Date(job.nextRunAt).toLocaleString()
+                        : "—"}
+                    </span>
+                  </div>
+                  <div className="flex gap-1" onClick={(e) => e.preventDefault()}>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setConfirmAction({ type: "activate", jobId: job.id });
-                      }}
+                      onClick={() =>
+                        setConfirmAction({ type: "runNow", jobId: job.id })
+                      }
                     >
-                      {t("activate")}
+                      {t("runNow")}
                     </Button>
-                  ) : (
+                    {job.status === "paused" || job.status === "error" ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setConfirmAction({ type: "activate", jobId: job.id })
+                        }
+                      >
+                        {t("activate")}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setConfirmAction({ type: "pause", jobId: job.id })
+                        }
+                      >
+                        {t("pause")}
+                      </Button>
+                    )}
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setConfirmAction({ type: "pause", jobId: job.id });
-                      }}
+                      className="text-destructive hover:text-destructive"
+                      onClick={() =>
+                        setConfirmAction({ type: "delete", jobId: job.id })
+                      }
                     >
-                      {t("pause")}
+                      {t("delete")}
                     </Button>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setConfirmAction({ type: "delete", jobId: job.id });
-                    }}
-                  >
-                    {t("delete")}
-                  </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
 

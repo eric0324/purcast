@@ -77,6 +77,7 @@
       "history": "歷史紀錄",
       "managementSection": "管理",
       "voices": "角色管理",
+      "channels": "頻道管理",
       "usageLabel": "本月額度"
     },
     "languageSwitcher": {
@@ -137,6 +138,36 @@
       "fallbackError": "建立失敗，請稍後再試"
     }
   },
+  "Channels": {
+    "title": "頻道管理",
+    "description": "管理自動 Podcast 的輸出頻道",
+    "officialBotSection": "PurCast 官方 Bot",
+    "officialBotSectionDescription": "使用 PurCast 官方 Bot 將 Podcast 直接傳送到你的 Telegram，每個帳號限一個。",
+    "officialBot": "官方 Bot",
+    "officialBotDescription": "使用 PurCast 官方 Bot 發送 Podcast，每個帳號限一個。",
+    "setupOfficialBot": "開始驗證",
+    "customSection": "自訂頻道",
+    "customSectionDescription": "使用你自己的 Telegram Bot 將 Podcast 傳送到任何聊天室。",
+    "customBot": "自訂 Bot",
+    "customBotDescription": "使用你自己的 Telegram Bot 和 Chat ID。",
+    "customEmptyDescription": "尚未建立自訂頻道，新增一個來開始使用。",
+    "addChannel": "新增頻道",
+    "channelName": "頻道名稱",
+    "channelNamePlaceholder": "例如：我的 Telegram 群組",
+    "connected": "已連結",
+    "telegramVerified": "Telegram 已驗證！",
+    "telegramVerifyHint": "請將以下驗證碼傳送給 PurCast Bot",
+    "telegramPolling": "等待驗證中...",
+    "botToken": "Bot Token",
+    "chatId": "Chat ID",
+    "cancel": "取消",
+    "create": "建立",
+    "creating": "建立中...",
+    "clickToRename": "點擊以重新命名",
+    "delete": "刪除",
+    "deleteConfirm": "確定要刪除此頻道？",
+    "deleteDescription": "此操作無法復原。使用此頻道的排程會自動移除對應的輸出設定。"
+  },
   "Settings": {
     "title": "設定",
     "accountInfo": "帳號資訊",
@@ -173,6 +204,10 @@
       "title": "切換輸入方式？",
       "description": "切換後目前的內容將被清除。"
     },
+    "outputLanguage": "輸出語言",
+    "langAuto": "自動（依來源語言）",
+    "langZhTW": "繁體中文",
+    "langEn": "English",
     "next": "下一步",
     "minCharsHint": "至少需要 {min} 個字元才能繼續",
     "titleLabel": "Podcast 標題",
@@ -264,6 +299,15 @@
       "sourceUrl": "網址",
       "sourceRss": "RSS Feed",
       "sourceUrlMonitor": "網址監控",
+      "sourceReddit": "Reddit",
+      "subredditPlaceholder": "例如 programming",
+      "redditSort": "排序",
+      "redditSortHot": "熱門",
+      "redditSortTopDay": "本日最佳",
+      "redditSortTopWeek": "本週最佳",
+      "redditSortTopMonth": "本月最佳",
+      "redditSortNew": "最新",
+      "includeComments": "包含熱門留言",
       "scheduleMode": "排程模式",
       "daily": "每天",
       "weekly": "每週",
@@ -291,6 +335,10 @@
         "deep_analysis": "深度分析",
         "talk_show": "脫口秀"
       },
+      "outputLanguage": "輸出語言",
+      "langAuto": "自動（依來源語言）",
+      "langZhTW": "繁體中文",
+      "langEn": "English",
       "customPrompt": "自訂提示",
       "customPromptPlaceholder": "額外的生成指示...",
       "voiceA": "主持人 A 聲音",
@@ -299,16 +347,13 @@
       "maxArticles": "最大文章數",
       "targetMinutes": "目標時長（分鐘）",
       "outputChannels": "輸出頻道",
-      "addTelegram": "連結 Telegram",
-      "telegramConnected": "Telegram 已連結",
-      "telegramVerifyHint": "請將以下驗證碼傳送給 PurCast Bot",
-      "telegramPolling": "等待驗證...",
-      "addLine": "新增 LINE",
-      "lineTokenLabel": "Channel Access Token",
+      "noChannels": "尚未設定頻道",
+      "goToChannels": "前往頻道管理新增",
       "outputFormat": "輸出格式",
       "formatAudio": "音檔",
       "formatLink": "連結",
       "formatBoth": "音檔 + 連結",
+      "outputRequired": "請至少設定一個輸出頻道",
       "review": "檢閱設定",
       "back": "上一步",
       "next": "下一步",
@@ -355,6 +400,17 @@
         "skipped": "已跳過"
       }
     }
+  },
+  "Listen": {
+    "poweredBy": "由 PurCast 生成",
+    "createYourOwn": "建立你的 Podcast",
+    "ctaSlogan": "把任何文字變成 Podcast",
+    "ctaButton": "免費開始",
+    "transcript": "逐字稿",
+    "showTranscript": "展開逐字稿",
+    "hideTranscript": "收合逐字稿",
+    "notFound": "找不到此 Podcast",
+    "notFoundDescription": "連結可能無效或 Podcast 尚未生成完成"
   },
   "Errors": {
     "auth": {
@@ -438,6 +494,15 @@
       "quotaExhausted": "本月額度已用完，無法啟用",
       "runNotFound": "找不到該執行紀錄"
     },
+    "channels": {
+      "nameAndTypeRequired": "請填寫頻道名稱和類型",
+      "invalidType": "不支援的頻道類型",
+      "telegramNotVerified": "Telegram 尚未驗證，請先完成驗證",
+      "customBotFieldsRequired": "請填寫 Bot Token 和 Chat ID",
+      "invalidTelegramMode": "無效的 Telegram 模式",
+      "notFound": "找不到該頻道",
+      "nameRequired": "請填寫頻道名稱"
+    },
     "feature": {
       "proOnly": "此功能僅限 Pro 方案使用"
     }
@@ -458,7 +523,7 @@
       "register": "註冊"
     },
     "hero": {
-      "tagline": "文字秒變 Podcast",
+      "tagline": "把任何文字變成 Podcast",
       "subtitle": "貼上文章，AI 生成對話，用你的聲音說出來。",
       "cta": "免費開始使用"
     },

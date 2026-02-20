@@ -43,6 +43,8 @@ const {
   mockUploadFile,
   // Output channels
   mockPublishToChannels,
+  // Channel resolver
+  mockResolveChannels,
   // Schedule
   mockCalculateNextRunAt,
 } = vi.hoisted(() => ({
@@ -68,6 +70,7 @@ const {
   mockGetAudioDuration: vi.fn(),
   mockUploadFile: vi.fn(),
   mockPublishToChannels: vi.fn(),
+  mockResolveChannels: vi.fn(),
   mockCalculateNextRunAt: vi.fn(),
 }));
 
@@ -137,6 +140,10 @@ vi.mock("@/lib/jobs/outputs", () => ({
   publishToChannels: mockPublishToChannels,
 }));
 
+vi.mock("@/lib/jobs/outputs/resolve", () => ({
+  resolveChannels: mockResolveChannels,
+}));
+
 vi.mock("@/lib/jobs/schedule", () => ({
   calculateNextRunAt: mockCalculateNextRunAt,
 }));
@@ -195,7 +202,7 @@ const jobConfig = {
     targetMinutes: 15,
   },
   outputConfig: [
-    { type: "telegram" as const, chatId: "tg-chat-123", format: "audio" as const },
+    { channelId: "ch-tg-1", format: "audio" as const },
   ],
 };
 
@@ -220,7 +227,7 @@ beforeEach(() => {
     selectedMeta: testSelectedMeta,
   });
   mockGenerateAggregatedScript.mockResolvedValue({
-    script: testScript,
+    dialogue: testScript,
     inputTokens: 500,
     outputTokens: 300,
   });
@@ -235,6 +242,7 @@ beforeEach(() => {
   mockGetAudioDuration.mockResolvedValue(842.3);
   mockUploadFile.mockResolvedValue("https://r2.example.com/podcasts/user-e2e-1/job-e2e-1.mp3");
   mockPodcastCreate.mockResolvedValue({ id: "podcast-e2e-1" });
+  mockResolveChannels.mockResolvedValue([{ type: "telegram", chatId: "tg-chat-123", format: "audio" }]);
   mockPublishToChannels.mockResolvedValue([{ type: "telegram", success: true }]);
   mockJobArticleCreateMany.mockResolvedValue({ count: 3 });
   mockCalculateNextRunAt.mockReturnValue(new Date("2026-02-20T00:00:00Z"));
@@ -319,12 +327,12 @@ describe("Job Lifecycle — End-to-End Integration", () => {
         })
       );
 
-      // TTS receives the generated script + voice IDs
+      // TTS receives the generated script + voice IDs (resolved from config.voices or env defaults)
       expect(mockSynthesizeScript).toHaveBeenCalledWith(
         {}, // TTS provider instance
         testScript,
-        "voice-cloned-1", // voiceId from config
-        undefined // voiceBId from env (not set in test)
+        expect.any(String), // voiceAId
+        expect.any(String)  // voiceBId
       );
 
       // Concat receives all audio segments
@@ -393,8 +401,9 @@ describe("Job Lifecycle — End-to-End Integration", () => {
     it("publishes to output channels with correct podcast info", async () => {
       await executeJob(jobConfig);
 
+      expect(mockResolveChannels).toHaveBeenCalledWith(jobConfig.outputConfig);
       expect(mockPublishToChannels).toHaveBeenCalledWith(
-        jobConfig.outputConfig,
+        [{ type: "telegram", chatId: "tg-chat-123", format: "audio" }],
         expect.objectContaining({
           audioUrl: "https://r2.example.com/podcasts/user-e2e-1/job-e2e-1.mp3",
           durationMs: 842300, // 842.3 * 1000 rounded
@@ -634,16 +643,16 @@ describe("Job Lifecycle — End-to-End Integration", () => {
       const multiChannelConfig = {
         ...jobConfig,
         outputConfig: [
-          { type: "telegram" as const, chatId: "tg-123", format: "audio" as const },
-          {
-            type: "line" as const,
-            channelAccessToken: "encrypted-token",
-            lineUserIds: ["line-user-1"],
-            format: "both" as const,
-          },
+          { channelId: "ch-tg-1", format: "audio" as const },
+          { channelId: "ch-line-1", format: "both" as const },
         ],
       };
 
+      const resolvedOutputs = [
+        { type: "telegram" as const, chatId: "tg-123", format: "audio" as const },
+        { type: "line" as const, channelAccessToken: "decrypted-token", lineUserIds: ["line-user-1"], format: "both" as const },
+      ];
+      mockResolveChannels.mockResolvedValue(resolvedOutputs);
       mockPublishToChannels.mockResolvedValue([
         { type: "telegram", success: true },
         { type: "line", success: true },
@@ -652,7 +661,7 @@ describe("Job Lifecycle — End-to-End Integration", () => {
       await executeJob(multiChannelConfig);
 
       expect(mockPublishToChannels).toHaveBeenCalledWith(
-        multiChannelConfig.outputConfig,
+        resolvedOutputs,
         expect.objectContaining({
           audioUrl: expect.any(String),
           title: expect.any(String),
@@ -664,16 +673,15 @@ describe("Job Lifecycle — End-to-End Integration", () => {
       const multiChannelConfig = {
         ...jobConfig,
         outputConfig: [
-          { type: "telegram" as const, chatId: "tg-123", format: "audio" as const },
-          {
-            type: "line" as const,
-            channelAccessToken: "enc-token",
-            lineUserIds: ["u1"],
-            format: "link" as const,
-          },
+          { channelId: "ch-tg-1", format: "audio" as const },
+          { channelId: "ch-line-1", format: "link" as const },
         ],
       };
 
+      mockResolveChannels.mockResolvedValue([
+        { type: "telegram", chatId: "tg-123", format: "audio" },
+        { type: "line", channelAccessToken: "dec-token", lineUserIds: ["u1"], format: "link" },
+      ]);
       mockPublishToChannels.mockResolvedValue([
         { type: "telegram", success: true },
         { type: "line", success: false, error: "Invalid token" },

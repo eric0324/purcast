@@ -77,6 +77,7 @@
       "history": "History",
       "managementSection": "Manage",
       "voices": "Characters",
+      "channels": "Channels",
       "usageLabel": "Monthly Usage"
     },
     "languageSwitcher": {
@@ -137,6 +138,36 @@
       "fallbackError": "Creation failed. Please try again later."
     }
   },
+  "Channels": {
+    "title": "Channels",
+    "description": "Manage your output channels for automated podcast delivery",
+    "officialBotSection": "PurCast Official Bot",
+    "officialBotSectionDescription": "Use the PurCast bot to deliver podcasts directly to your Telegram. One per account.",
+    "officialBot": "Official Bot",
+    "officialBotDescription": "Use the PurCast bot to deliver podcasts. One per account.",
+    "setupOfficialBot": "Start Verification",
+    "customSection": "Custom Channels",
+    "customSectionDescription": "Use your own Telegram bot to deliver podcasts to any chat.",
+    "customBot": "Custom Bot",
+    "customBotDescription": "Use your own Telegram bot with a custom chat ID.",
+    "customEmptyDescription": "No custom channels yet. Add one to get started.",
+    "addChannel": "Add Channel",
+    "channelName": "Channel Name",
+    "channelNamePlaceholder": "e.g., My Telegram Group",
+    "connected": "Connected",
+    "telegramVerified": "Telegram verified!",
+    "telegramVerifyHint": "Send this code to PurCast Bot",
+    "telegramPolling": "Waiting for verification...",
+    "botToken": "Bot Token",
+    "chatId": "Chat ID",
+    "cancel": "Cancel",
+    "create": "Create",
+    "creating": "Creating...",
+    "clickToRename": "Click to rename",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this channel?",
+    "deleteDescription": "This action cannot be undone. Jobs using this channel will have it removed from their output config."
+  },
   "Settings": {
     "title": "Settings",
     "accountInfo": "Account info",
@@ -173,6 +204,10 @@
       "title": "Switch input method?",
       "description": "Switching will clear the current content."
     },
+    "outputLanguage": "Output Language",
+    "langAuto": "Auto (match source)",
+    "langZhTW": "繁體中文",
+    "langEn": "English",
     "next": "Next",
     "minCharsHint": "At least {min} characters required to continue",
     "titleLabel": "Podcast Title",
@@ -264,6 +299,15 @@
       "sourceUrl": "URL",
       "sourceRss": "RSS Feed",
       "sourceUrlMonitor": "URL Monitor",
+      "sourceReddit": "Reddit",
+      "subredditPlaceholder": "e.g. programming",
+      "redditSort": "Sort",
+      "redditSortHot": "Hot",
+      "redditSortTopDay": "Top (Today)",
+      "redditSortTopWeek": "Top (This Week)",
+      "redditSortTopMonth": "Top (This Month)",
+      "redditSortNew": "New",
+      "includeComments": "Include top comments",
       "scheduleMode": "Schedule Mode",
       "daily": "Daily",
       "weekly": "Weekly",
@@ -291,6 +335,10 @@
         "deep_analysis": "Deep Analysis",
         "talk_show": "Talk Show"
       },
+      "outputLanguage": "Output Language",
+      "langAuto": "Auto (match source)",
+      "langZhTW": "繁體中文",
+      "langEn": "English",
       "customPrompt": "Custom Prompt",
       "customPromptPlaceholder": "Additional generation instructions...",
       "voiceA": "Host A Voice",
@@ -299,16 +347,13 @@
       "maxArticles": "Max Articles",
       "targetMinutes": "Target Duration (minutes)",
       "outputChannels": "Output Channels",
-      "addTelegram": "Connect Telegram",
-      "telegramConnected": "Telegram Connected",
-      "telegramVerifyHint": "Send this code to PurCast Bot",
-      "telegramPolling": "Waiting for verification...",
-      "addLine": "Add LINE",
-      "lineTokenLabel": "Channel Access Token",
+      "noChannels": "No channels configured yet",
+      "goToChannels": "Go to Channels to add one",
       "outputFormat": "Output Format",
       "formatAudio": "Audio",
       "formatLink": "Link",
       "formatBoth": "Audio + Link",
+      "outputRequired": "Please set up at least one output channel",
       "review": "Review Settings",
       "back": "Back",
       "next": "Next",
@@ -355,6 +400,17 @@
         "skipped": "Skipped"
       }
     }
+  },
+  "Listen": {
+    "poweredBy": "Powered by PurCast",
+    "createYourOwn": "Create your own Podcast",
+    "ctaSlogan": "Turn any text into a Podcast",
+    "ctaButton": "Get Started",
+    "transcript": "Transcript",
+    "showTranscript": "Show transcript",
+    "hideTranscript": "Hide transcript",
+    "notFound": "Podcast not found",
+    "notFoundDescription": "The link may be invalid or the podcast hasn't been generated yet"
   },
   "Errors": {
     "auth": {
@@ -438,6 +494,15 @@
       "quotaExhausted": "Monthly quota exhausted, cannot activate",
       "runNotFound": "Run not found"
     },
+    "channels": {
+      "nameAndTypeRequired": "Channel name and type are required",
+      "invalidType": "Unsupported channel type",
+      "telegramNotVerified": "Telegram not verified. Please complete verification first.",
+      "customBotFieldsRequired": "Bot token and chat ID are required",
+      "invalidTelegramMode": "Invalid Telegram mode",
+      "notFound": "Channel not found",
+      "nameRequired": "Channel name is required"
+    },
     "feature": {
       "proOnly": "This feature is available on the Pro plan only"
     }
@@ -458,7 +523,7 @@
       "register": "Sign up"
     },
     "hero": {
-      "tagline": "Text to Podcast, instantly",
+      "tagline": "Turn any text into a Podcast",
       "subtitle": "Paste an article, AI creates the dialogue, in your voice.",
       "cta": "Get Started Free"
     },

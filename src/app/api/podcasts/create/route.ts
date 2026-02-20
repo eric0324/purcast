@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { nanoid } from "nanoid";
 import { getCurrentUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/client";
 import { cleanContent, validateContent } from "@/lib/content/clean";
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
         sourceContent: cleanedContent,
         sourceUrl: sourceType === "url" ? sourceUrl : null,
         status: "pending",
+        shareToken: nanoid(12),
       },
     });
 

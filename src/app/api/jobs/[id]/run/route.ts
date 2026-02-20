@@ -8,7 +8,7 @@ import type {
   JobSchedule,
   JobFilterConfig,
   JobGenerationConfig,
-  JobOutputConfig,
+  JobChannelBinding,
 } from "@/lib/jobs/types";
 
 interface RouteParams {
@@ -55,7 +55,7 @@ export async function POST(_request: NextRequest, { params }: RouteParams) {
     schedule: job.schedule as unknown as JobSchedule,
     filterConfig: job.filterConfig as unknown as JobFilterConfig,
     generationConfig: job.generationConfig as unknown as JobGenerationConfig,
-    outputConfig: job.outputConfig as unknown as JobOutputConfig[],
+    outputConfig: job.outputConfig as unknown as JobChannelBinding[],
   }).catch((err) => {
     console.error(`[RunNow] Job ${id} failed:`, err);
   });

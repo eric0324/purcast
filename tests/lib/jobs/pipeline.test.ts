@@ -20,6 +20,7 @@ const {
   mockGetAudioDuration,
   mockUploadFile,
   mockPublishToChannels,
+  mockResolveChannels,
   mockCalculateNextRunAt,
 } = vi.hoisted(() => ({
   mockJobRunCreate: vi.fn(),
@@ -40,6 +41,7 @@ const {
   mockGetAudioDuration: vi.fn(),
   mockUploadFile: vi.fn(),
   mockPublishToChannels: vi.fn(),
+  mockResolveChannels: vi.fn(),
   mockCalculateNextRunAt: vi.fn(),
 }));
 
@@ -97,6 +99,10 @@ vi.mock("@/lib/jobs/outputs", () => ({
   publishToChannels: mockPublishToChannels,
 }));
 
+vi.mock("@/lib/jobs/outputs/resolve", () => ({
+  resolveChannels: mockResolveChannels,
+}));
+
 vi.mock("@/lib/jobs/schedule", () => ({
   calculateNextRunAt: mockCalculateNextRunAt,
 }));
@@ -120,7 +126,7 @@ const jobData = {
     maxArticles: 5,
     targetMinutes: 15,
   },
-  outputConfig: [{ type: "telegram" as const, chatId: "123", format: "audio" as const }],
+  outputConfig: [{ channelId: "ch-1", format: "audio" as const }],
 };
 
 const mockArticles = [
@@ -147,13 +153,14 @@ beforeEach(() => {
     selected: mockArticles,
     selectedMeta: mockArticles.map((a) => ({ title: a.title, url: a.url, reason: "Matched" })),
   });
-  mockGenerateAggregatedScript.mockResolvedValue({ script: mockScript, inputTokens: 100, outputTokens: 200 });
+  mockGenerateAggregatedScript.mockResolvedValue({ dialogue: mockScript, inputTokens: 100, outputTokens: 200 });
   mockCreateTTSProvider.mockReturnValue({});
   mockSynthesizeScript.mockResolvedValue([Buffer.from("audio1"), Buffer.from("audio2")]);
   mockConcatAudioSegments.mockResolvedValue(Buffer.from("final-audio"));
   mockGetAudioDuration.mockResolvedValue(120.5);
   mockUploadFile.mockResolvedValue("https://r2.example.com/audio.mp3");
   mockPodcastCreate.mockResolvedValue({ id: "podcast-1" });
+  mockResolveChannels.mockResolvedValue([{ type: "telegram", chatId: "123", format: "audio" }]);
   mockPublishToChannels.mockResolvedValue([{ type: "telegram", success: true }]);
   mockJobArticleCreateMany.mockResolvedValue({ count: 2 });
   mockJobUpdateMany.mockResolvedValue({ count: 0 });

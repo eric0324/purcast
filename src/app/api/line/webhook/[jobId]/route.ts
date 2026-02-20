@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/client";
 import { verifyLineSignature } from "@/lib/jobs/outputs/line";
-import type { JobOutputConfig } from "@/lib/jobs/types";
+// Local type for LINE output config (kept for future restoration)
+interface LineOutputConfig {
+  type: "line";
+  channelAccessToken: string;
+  lineUserIds: string[];
+  format: string;
+}
 
 interface RouteParams {
   params: Promise<{ jobId: string }>;
@@ -20,10 +26,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
 
-    const outputConfigs = job.outputConfig as unknown as JobOutputConfig[];
-    const lineConfig = outputConfigs.find((c) => c.type === "line");
+    const outputConfigs = job.outputConfig as unknown as LineOutputConfig[];
+    const lineConfig = outputConfigs.find((c: LineOutputConfig) => c.type === "line");
 
-    if (!lineConfig || lineConfig.type !== "line") {
+    if (!lineConfig) {
       return NextResponse.json(
         { error: "LINE not configured for this job" },
         { status: 400 }
@@ -52,7 +58,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           lineConfig.lineUserIds.push(lineUserId);
 
           // Update the job's outputConfig
-          const updatedConfigs = outputConfigs.map((c) =>
+          const updatedConfigs = outputConfigs.map((c: LineOutputConfig) =>
             c.type === "line" ? lineConfig : c
           );
 
@@ -69,7 +75,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       if (event.type === "unfollow" && event.source?.userId) {
         const lineUserId = event.source.userId;
         lineConfig.lineUserIds = lineConfig.lineUserIds.filter(
-          (id) => id !== lineUserId
+          (id: string) => id !== lineUserId
         );
 
         const updatedConfigs = outputConfigs.map((c) =>

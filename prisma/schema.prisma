@@ -22,6 +22,7 @@ model User {
   podcasts Podcast[]
   usage    Usage[]
   jobs     Job[]
+  channels Channel[]
 
   @@map("users")
 }
@@ -52,6 +53,7 @@ model Podcast {
   status        String   @default("pending") // 'pending' | 'generating_script' | 'script_ready' | 'generating_audio' | 'completed' | 'failed'
   errorMessage  String?  @map("error_message")
   jobRunId      String?  @map("job_run_id") @db.Uuid
+  shareToken    String?  @unique @map("share_token")
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
@@ -124,6 +126,20 @@ model JobArticle {
 
   @@unique([jobId, url])
   @@map("job_articles")
+}
+
+model Channel {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  name      String
+  type      String   // "telegram" | "line"
+  config    Json     // type-specific config
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("channels")
 }
 
 model PasswordResetToken {

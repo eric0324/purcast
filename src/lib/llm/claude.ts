@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { SYSTEM_PROMPT, buildUserPrompt } from "./prompts";
+import { buildSystemPrompt, buildUserPrompt } from "./prompts";
 import type { DialogueScript, GenerateScriptResult, LLMProvider, ScriptOptions } from "./types";
 import { LLMError } from "./types";
 
@@ -19,6 +19,7 @@ export class ClaudeProvider implements LLMProvider {
     content: string,
     options?: ScriptOptions
   ): Promise<GenerateScriptResult> {
+    const systemPrompt = buildSystemPrompt(options?.outputLanguage);
     const userPrompt = buildUserPrompt(content, options);
     let parseRetries = 0;
     let timeoutRetries = 0;
@@ -30,7 +31,7 @@ export class ClaudeProvider implements LLMProvider {
         response = await this.client.messages.create({
           model: MODEL,
           max_tokens: MAX_TOKENS,
-          system: SYSTEM_PROMPT,
+          system: systemPrompt,
           messages: [{ role: "user", content: userPrompt }],
         });
       } catch (error: unknown) {

@@ -1,25 +1,47 @@
 import { describe, it, expect } from "vitest";
-import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/llm/prompts";
+import { buildSystemPrompt, buildUserPrompt } from "@/lib/llm/prompts";
 
-describe("SYSTEM_PROMPT", () => {
+describe("buildSystemPrompt", () => {
   it("contains Host A and Host B role definitions", () => {
-    expect(SYSTEM_PROMPT).toContain("Host A");
-    expect(SYSTEM_PROMPT).toContain("Host B");
+    const prompt = buildSystemPrompt();
+    expect(prompt).toContain("Host A");
+    expect(prompt).toContain("Host B");
   });
 
   it("specifies JSON output format", () => {
-    expect(SYSTEM_PROMPT).toContain("JSON");
-    expect(SYSTEM_PROMPT).toContain('"speaker"');
-    expect(SYSTEM_PROMPT).toContain('"text"');
+    const prompt = buildSystemPrompt();
+    expect(prompt).toContain("JSON");
+    expect(prompt).toContain('"speaker"');
+    expect(prompt).toContain('"text"');
   });
 
-  it("includes auto language detection instruction", () => {
-    expect(SYSTEM_PROMPT).toMatch(/language/i);
-    expect(SYSTEM_PROMPT).toMatch(/detect|same language|match/i);
+  it("includes auto language detection when no outputLanguage is set", () => {
+    const prompt = buildSystemPrompt();
+    expect(prompt).toMatch(/detect/i);
+    expect(prompt).toMatch(/same language|match the original language/i);
+  });
+
+  it("includes auto language detection for 'auto'", () => {
+    const prompt = buildSystemPrompt("auto");
+    expect(prompt).toMatch(/detect/i);
+  });
+
+  it("uses specified language for zh-TW", () => {
+    const prompt = buildSystemPrompt("zh-TW");
+    expect(prompt).toContain("Traditional Chinese");
+    expect(prompt).toContain("translate and adapt");
+    expect(prompt).not.toMatch(/detect the language/i);
+  });
+
+  it("uses specified language for en", () => {
+    const prompt = buildSystemPrompt("en");
+    expect(prompt).toContain("English");
+    expect(prompt).toContain("translate and adapt");
   });
 
   it("includes character limit instruction (500)", () => {
-    expect(SYSTEM_PROMPT).toContain("500");
+    const prompt = buildSystemPrompt();
+    expect(prompt).toContain("500");
   });
 });
 

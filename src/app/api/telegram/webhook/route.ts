@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyCode, storeVerifiedChatId } from "@/lib/jobs/outputs/telegram-verify";
+import { prisma } from "@/lib/db/client";
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,19 +49,40 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ ok: true });
       }
 
-      // Invalid or expired code
+      // Check if this chat is already bound to a channel
       if (botToken) {
-        await fetch(
-          `https://api.telegram.org/bot${botToken}/sendMessage`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: chatId,
-              text: "❌ 驗證碼無效或已過期，請重新產生。\n\nInvalid or expired code. Please generate a new one.",
-            }),
-          }
-        );
+        const existingChannel = await prisma.channel.findFirst({
+          where: {
+            type: "telegram",
+            config: { path: ["chatId"], equals: chatId },
+          },
+        });
+
+        if (existingChannel) {
+          await fetch(
+            `https://api.telegram.org/bot${botToken}/sendMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: "✅ 此聊天室已綁定 PurCast，無需重複驗證。\n\nThis chat is already linked to PurCast. No need to verify again.",
+              }),
+            }
+          );
+        } else {
+          await fetch(
+            `https://api.telegram.org/bot${botToken}/sendMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: "❌ 驗證碼無效或已過期，請重新產生。\n\nInvalid or expired code. Please generate a new one.",
+              }),
+            }
+          );
+        }
       }
 
       return NextResponse.json({ ok: true });

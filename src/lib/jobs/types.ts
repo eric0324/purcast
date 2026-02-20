@@ -1,7 +1,12 @@
+export type RedditSort = "hot" | "top_day" | "top_week" | "top_month" | "new";
+
 export interface JobSource {
-  type: "rss" | "url";
+  type: "rss" | "url" | "reddit";
   url: string;
   label?: string;
+  subreddit?: string;
+  sort?: RedditSort;
+  includeComments?: boolean;
 }
 
 export interface JobSchedule {
@@ -29,6 +34,7 @@ export interface JobGenerationConfig {
   voices?: Record<string, string>; // speaker → voiceId, e.g. { A: "xxx", B: "yyy" }
   maxArticles: number; // default 5
   targetMinutes: number; // default 15
+  outputLanguage?: string; // "auto" | "zh-TW" | "en"
 }
 
 export type OutputFormat = "audio" | "link" | "both";
@@ -36,17 +42,33 @@ export type OutputFormat = "audio" | "link" | "both";
 export interface TelegramOutputConfig {
   type: "telegram";
   chatId: string;
+  botToken?: string;
   format: OutputFormat;
 }
 
-export interface LineOutputConfig {
-  type: "line";
-  channelAccessToken: string;
-  lineUserIds: string[];
+export type JobOutputConfig = TelegramOutputConfig;
+
+// Channel-based binding (stored in Job.outputConfig)
+export interface JobChannelBinding {
+  channelId: string;
   format: OutputFormat;
 }
 
-export type JobOutputConfig = TelegramOutputConfig | LineOutputConfig;
+// Channel config JSON structures (stored in Channel.config)
+export interface TelegramOfficialChannelConfig {
+  mode: "official";
+  chatId: string;
+}
+
+export interface TelegramCustomChannelConfig {
+  mode: "custom";
+  botToken: string; // encrypted
+  chatId: string;
+}
+
+export type TelegramChannelConfig =
+  | TelegramOfficialChannelConfig
+  | TelegramCustomChannelConfig;
 
 export interface SelectedArticle {
   title: string;

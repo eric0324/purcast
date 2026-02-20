@@ -20,6 +20,7 @@ export function Sidebar() {
   const browseItems = [
     { href: "/history" as const, label: t("history") },
     { href: "/voices" as const, label: t("voices") },
+    { href: "/channels" as const, label: t("channels") },
   ];
 
   return (

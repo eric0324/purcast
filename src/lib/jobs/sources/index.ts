@@ -2,6 +2,7 @@ import type { JobSource } from "../types";
 import type { FetchedArticle } from "./types";
 import { fetchRSS } from "./rss";
 import { fetchURLMonitor } from "./url-monitor";
+import { fetchReddit } from "./reddit";
 
 export async function fetchSources(
   sources: JobSource[]
@@ -39,6 +40,11 @@ async function fetchSource(source: JobSource): Promise<FetchedArticle[]> {
       return fetchRSS(source.url);
     case "url":
       return fetchURLMonitor(source.url);
+    case "reddit":
+      return fetchReddit(source.url, {
+        sort: source.sort,
+        includeComments: source.includeComments,
+      });
     default:
       console.warn(`[Sources] Unknown source type: ${(source as JobSource).type}`);
       return [];

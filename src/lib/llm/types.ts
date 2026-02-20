@@ -13,6 +13,7 @@ export interface GenerateScriptResult {
 export interface ScriptOptions {
   targetTurns?: number;
   maxCharsPerLine?: number;
+  outputLanguage?: string;
 }
 
 export interface LLMProvider {

@@ -2,38 +2,34 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/client";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { JobWizard } from "@/components/jobs/JobWizard";
+import { ChannelList } from "./channel-list";
 
-export default async function NewJobPage() {
+export default async function ChannelsPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const t = await getTranslations("Jobs");
-
-  const voices = await prisma.voice.findMany({
-    where: { userId: user.id },
-    select: { id: true, name: true },
-  });
+  const t = await getTranslations("Channels");
 
   const channels = await prisma.channel.findMany({
     where: { userId: user.id },
-    select: { id: true, name: true, type: true, config: true },
+    orderBy: { createdAt: "desc" },
   });
 
-  const serializedChannels = channels.map((ch) => ({
+  const serialized = channels.map((ch) => ({
     id: ch.id,
     name: ch.name,
     type: ch.type,
     config: ch.config as Record<string, unknown>,
+    createdAt: ch.createdAt.toISOString(),
   }));
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">{t("createNew")}</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
-      <JobWizard voices={voices} channels={serializedChannels} />
+      <ChannelList initialChannels={serialized} />
     </div>
   );
 }

@@ -16,6 +16,7 @@ export interface AggregationConfig {
   stylePreset: StylePreset;
   customPrompt?: string;
   targetMinutes: number;
+  outputLanguage?: string;
 }
 
 export async function generateAggregatedScript(
@@ -81,9 +82,24 @@ export async function generateAggregatedScript(
   }
 }
 
+const LANGUAGE_INSTRUCTIONS: Record<string, string> = {
+  "zh-TW":
+    "1. Write the title and dialogue in Traditional Chinese using **Taiwanese Mandarin conventions** (台灣用語). " +
+    "Do NOT use Mainland Chinese terms — for example use 影片 not 視頻, 軟體 not 軟件, 資訊 not 信息, 網路 not 網絡, 示範 not 演示, 記憶體 not 內存, 滑鼠 not 鼠標, 行動裝置 not 移動設備, 程式 not 程序. " +
+    "The source may be in a different language — translate and adapt the content.",
+  en: "1. Write the title and dialogue in English. The source may be in a different language — translate and adapt the content.",
+};
+
 function buildAggregateSystemPrompt(config: AggregationConfig): string {
   const stylePrompt =
     STYLE_PRESETS[config.stylePreset] || STYLE_PRESETS.casual_chat;
+
+  const langRule =
+    config.outputLanguage &&
+    config.outputLanguage !== "auto" &&
+    LANGUAGE_INSTRUCTIONS[config.outputLanguage]
+      ? LANGUAGE_INSTRUCTIONS[config.outputLanguage]
+      : "1. Detect the language of the source articles and write in the same language. If the source is in Traditional Chinese, use Taiwanese Mandarin conventions (台灣用語), not Mainland Chinese terms.";
 
   let prompt = `You are a podcast script writer creating an aggregated episode from multiple articles.
 
@@ -95,9 +111,13 @@ Return a JSON object with two fields:
 - "dialogue": an array of dialogue lines, each with "speaker" ("A" or "B") and "text" (max 500 characters)
 
 ## Rules
-1. Detect the language of the source articles and write in the same language.
+${langRule}
 2. Cover ALL provided articles, creating smooth transitions between topics.
-3. Start with a brief overview of today's topics and end with a natural conclusion.
+3. IMPORTANT — Opening & Closing:
+   - Always start with a warm opening where hosts greet the audience and give a brief overview
+     of today's topics. Never jump directly into the first article.
+   - Always end with a clear sign-off (e.g. "That's all for today! Thanks for listening.").
+     Never end abruptly.
 4. Keep each dialogue line under 500 characters.
 5. Return ONLY the JSON object — no markdown, no code fences, no extra text.`;
 

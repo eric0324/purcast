@@ -13,13 +13,22 @@ interface Voice {
   name: string;
 }
 
+interface ChannelOption {
+  id: string;
+  name: string;
+  type: string;
+  config: Record<string, unknown>;
+}
+
 interface JobWizardProps {
   voices: Voice[];
+  channels: ChannelOption[];
   initialData?: Record<string, unknown>;
   jobId?: string;
 }
 
-type SourceType = "rss" | "url";
+type SourceType = "rss" | "url" | "reddit";
+type RedditSort = "hot" | "top_day" | "top_week" | "top_month" | "new";
 type ScheduleMode = "daily" | "weekly";
 type OutputFormat = "audio" | "link" | "both";
 
@@ -27,26 +36,18 @@ interface Source {
   type: SourceType;
   url: string;
   label?: string;
+  sort?: RedditSort;
+  includeComments?: boolean;
 }
 
-interface TelegramOutput {
-  type: "telegram";
-  chatId: string;
+interface ChannelBinding {
+  channelId: string;
   format: OutputFormat;
 }
-
-interface LineOutput {
-  type: "line";
-  channelAccessToken: string;
-  lineUserIds: string[];
-  format: OutputFormat;
-}
-
-type OutputConfig = TelegramOutput | LineOutput;
 
 const STYLE_PRESETS = ["news_brief", "casual_chat", "deep_analysis", "talk_show"] as const;
 
-export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
+export function JobWizard({ voices, channels, initialData, jobId }: JobWizardProps) {
   const t = useTranslations("Jobs.wizard");
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -101,45 +102,28 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
   const [targetMinutes, setTargetMinutes] = useState(
     (initialData?.generationConfig as { targetMinutes?: number })?.targetMinutes ?? 15
   );
-
-  // Step 4
-  const [outputs, setOutputs] = useState<OutputConfig[]>(
-    (initialData?.outputConfig as OutputConfig[]) || []
+  const [outputLanguage, setOutputLanguage] = useState(
+    (initialData?.generationConfig as { outputLanguage?: string })?.outputLanguage || "auto"
   );
-  const [telegramChatId, setTelegramChatId] = useState("");
-  const [telegramFormat, setTelegramFormat] = useState<OutputFormat>("both");
-  const [telegramCode, setTelegramCode] = useState("");
-  const [telegramBotLink, setTelegramBotLink] = useState("");
-  const [telegramPolling, setTelegramPolling] = useState(false);
 
-  async function connectTelegram() {
-    const res = await fetch("/api/telegram/connect", { method: "POST" });
-    const data = await res.json();
-    setTelegramCode(data.code);
-    setTelegramBotLink(data.botLink);
+  // Step 4 — Channel bindings
+  const [bindings, setBindings] = useState<ChannelBinding[]>(() => {
+    const initial = initialData?.outputConfig as ChannelBinding[] | undefined;
+    return Array.isArray(initial) ? initial : [];
+  });
 
-    // Start polling for verification
-    setTelegramPolling(true);
-    const interval = setInterval(async () => {
-      const pollRes = await fetch("/api/telegram/connect");
-      const pollData = await pollRes.json();
-      if (pollData.verified) {
-        clearInterval(interval);
-        setTelegramChatId(pollData.chatId);
-        setTelegramPolling(false);
-        setTelegramCode("");
-        setOutputs((prev) => [
-          ...prev.filter((o) => o.type !== "telegram"),
-          { type: "telegram", chatId: pollData.chatId, format: telegramFormat },
-        ]);
-      }
-    }, 3000);
+  function toggleChannel(channelId: string) {
+    setBindings((prev) => {
+      const exists = prev.find((b) => b.channelId === channelId);
+      if (exists) return prev.filter((b) => b.channelId !== channelId);
+      return [...prev, { channelId, format: "both" }];
+    });
+  }
 
-    // Stop polling after 10 minutes
-    setTimeout(() => {
-      clearInterval(interval);
-      setTelegramPolling(false);
-    }, 600000);
+  function setChannelFormat(channelId: string, format: OutputFormat) {
+    setBindings((prev) =>
+      prev.map((b) => (b.channelId === channelId ? { ...b, format } : b))
+    );
   }
 
   function addKeyword(type: "include" | "exclude") {
@@ -160,7 +144,13 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
 
     const body = {
       name,
-      sources: sources.filter((s) => s.url),
+      sources: sources
+        .filter((s) => s.url)
+        .map((s) =>
+          s.type === "reddit"
+            ? { type: s.type, url: s.url, sort: s.sort, includeComments: s.includeComments }
+            : { type: s.type, url: s.url }
+        ),
       schedule: {
         mode: scheduleMode,
         time: scheduleTime,
@@ -181,8 +171,9 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
         maxArticles,
         targetMinutes,
         ...(customPrompt ? { customPrompt } : {}),
+        ...(outputLanguage !== "auto" ? { outputLanguage } : {}),
       },
-      outputConfig: outputs,
+      outputConfig: bindings,
     };
 
     try {
@@ -254,39 +245,98 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
             <div>
               <Label>{t("sourcesLabel")}</Label>
               {sources.map((src, i) => (
-                <div key={i} className="mt-2 flex gap-2">
-                  <select
-                    className="rounded-md border px-2 py-1 text-sm"
-                    value={src.type}
-                    onChange={(e) => {
-                      const updated = [...sources];
-                      updated[i] = { ...src, type: e.target.value as SourceType };
-                      setSources(updated);
-                    }}
-                  >
-                    <option value="rss">{t("sourceRss")}</option>
-                    <option value="url">{t("sourceUrlMonitor")}</option>
-                  </select>
-                  <Input
-                    className="flex-1"
-                    value={src.url}
-                    onChange={(e) => {
-                      const updated = [...sources];
-                      updated[i] = { ...src, url: e.target.value };
-                      setSources(updated);
-                    }}
-                    placeholder="https://..."
-                  />
-                  {sources.length > 1 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        setSources(sources.filter((_, j) => j !== i))
-                      }
+                <div key={i} className="mt-2 space-y-2">
+                  <div className="flex gap-2">
+                    <select
+                      className="rounded-md border px-2 py-1 text-sm"
+                      value={src.type}
+                      onChange={(e) => {
+                        const updated = [...sources];
+                        const newType = e.target.value as SourceType;
+                        updated[i] = newType === "reddit"
+                          ? { ...src, type: newType, url: "", sort: "hot", includeComments: true }
+                          : { type: newType, url: "" };
+                        setSources(updated);
+                      }}
                     >
-                      ✕
-                    </Button>
+                      <option value="rss">{t("sourceRss")}</option>
+                      <option value="url">{t("sourceUrlMonitor")}</option>
+                      <option value="reddit">{t("sourceReddit")}</option>
+                    </select>
+                    {src.type === "reddit" ? (
+                      <div className="flex flex-1 items-center gap-0">
+                        <span className="rounded-l-md border border-r-0 bg-muted px-2 py-1.5 text-sm text-muted-foreground">
+                          r/
+                        </span>
+                        <Input
+                          className="flex-1 rounded-l-none"
+                          value={src.url}
+                          onChange={(e) => {
+                            const updated = [...sources];
+                            updated[i] = { ...src, url: e.target.value };
+                            setSources(updated);
+                          }}
+                          placeholder={t("subredditPlaceholder")}
+                        />
+                      </div>
+                    ) : (
+                      <Input
+                        className="flex-1"
+                        value={src.url}
+                        onChange={(e) => {
+                          const updated = [...sources];
+                          updated[i] = { ...src, url: e.target.value };
+                          setSources(updated);
+                        }}
+                        placeholder="https://..."
+                      />
+                    )}
+                    {sources.length > 1 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setSources(sources.filter((_, j) => j !== i))
+                        }
+                      >
+                        ✕
+                      </Button>
+                    )}
+                  </div>
+                  {src.type === "reddit" && (
+                    <div className="ml-[calc(theme(spacing.2)+100px)] flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <label className="text-xs text-muted-foreground">{t("redditSort")}</label>
+                        <select
+                          className="rounded-md border px-2 py-1 text-xs"
+                          value={src.sort || "hot"}
+                          onChange={(e) => {
+                            const updated = [...sources];
+                            updated[i] = { ...src, sort: e.target.value as RedditSort };
+                            setSources(updated);
+                          }}
+                        >
+                          <option value="hot">{t("redditSortHot")}</option>
+                          <option value="top_day">{t("redditSortTopDay")}</option>
+                          <option value="top_week">{t("redditSortTopWeek")}</option>
+                          <option value="top_month">{t("redditSortTopMonth")}</option>
+                          <option value="new">{t("redditSortNew")}</option>
+                        </select>
+                      </div>
+                      <label className="flex items-center gap-1.5 text-xs">
+                        <input
+                          type="checkbox"
+                          checked={src.includeComments ?? true}
+                          onChange={(e) => {
+                            const updated = [...sources];
+                            updated[i] = { ...src, includeComments: e.target.checked };
+                            setSources(updated);
+                          }}
+                          className="rounded"
+                        />
+                        <span className="text-muted-foreground">{t("includeComments")}</span>
+                      </label>
+                    </div>
                   )}
                 </div>
               ))}
@@ -467,6 +517,18 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
               </div>
             </div>
             <div>
+              <Label>{t("outputLanguage")}</Label>
+              <select
+                className="mt-1 block rounded-md border px-3 py-2 text-sm"
+                value={outputLanguage}
+                onChange={(e) => setOutputLanguage(e.target.value)}
+              >
+                <option value="auto">{t("langAuto")}</option>
+                <option value="zh-TW">{t("langZhTW")}</option>
+                <option value="en">{t("langEn")}</option>
+              </select>
+            </div>
+            <div>
               <Label>{t("customPrompt")}</Label>
               <textarea
                 className="mt-1 w-full rounded-md border px-3 py-2 text-sm"
@@ -545,73 +607,76 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
           <CardContent className="space-y-4">
             <div>
               <Label>{t("outputChannels")}</Label>
-
-              {/* Telegram */}
-              <div className="mt-2 rounded-md border p-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Telegram</span>
-                  {telegramChatId || outputs.some((o) => o.type === "telegram") ? (
-                    <span className="text-xs text-green-600">
-                      {t("telegramConnected")}
-                    </span>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={connectTelegram}
-                      disabled={telegramPolling}
-                    >
-                      {t("addTelegram")}
-                    </Button>
-                  )}
+              {channels.length === 0 ? (
+                <div className="mt-2 rounded-md border border-dashed p-6 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    {t("noChannels")}
+                  </p>
+                  <a
+                    href="/channels"
+                    className="mt-2 inline-block text-sm text-primary underline"
+                  >
+                    {t("goToChannels")}
+                  </a>
                 </div>
-                {telegramCode && (
-                  <div className="mt-2 text-sm">
-                    <p>{t("telegramVerifyHint")}</p>
-                    <div className="mt-1 flex items-center gap-2">
-                      <code className="rounded bg-muted px-2 py-1 text-lg font-bold">
-                        {telegramCode}
-                      </code>
-                      <a
-                        href={telegramBotLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline"
+              ) : (
+                <div className="mt-2 space-y-2">
+                  {channels.map((ch) => {
+                    const binding = bindings.find(
+                      (b) => b.channelId === ch.id
+                    );
+                    const isSelected = !!binding;
+                    return (
+                      <div
+                        key={ch.id}
+                        className={`rounded-md border p-3 transition-colors ${
+                          isSelected ? "border-primary bg-primary/5" : ""
+                        }`}
                       >
-                        Open Bot
-                      </a>
-                    </div>
-                    {telegramPolling && (
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {t("telegramPolling")}
-                      </p>
-                    )}
-                  </div>
-                )}
-                {(telegramChatId || outputs.some((o) => o.type === "telegram")) && (
-                  <div className="mt-2">
-                    <Label>{t("outputFormat")}</Label>
-                    <select
-                      className="mt-1 block rounded-md border px-2 py-1 text-sm"
-                      value={telegramFormat}
-                      onChange={(e) => {
-                        const fmt = e.target.value as OutputFormat;
-                        setTelegramFormat(fmt);
-                        setOutputs((prev) =>
-                          prev.map((o) =>
-                            o.type === "telegram" ? { ...o, format: fmt } : o
-                          )
-                        );
-                      }}
-                    >
-                      <option value="audio">{t("formatAudio")}</option>
-                      <option value="link">{t("formatLink")}</option>
-                      <option value="both">{t("formatBoth")}</option>
-                    </select>
-                  </div>
-                )}
-              </div>
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleChannel(ch.id)}
+                            className="rounded"
+                          />
+                          <div className="flex-1">
+                            <span className="text-sm font-medium">
+                              {ch.name}
+                            </span>
+                            <span className="ml-2 inline-block rounded-full bg-muted px-2 py-0.5 text-xs">
+                              {ch.type === "telegram" ? "Telegram" : "LINE"}
+                            </span>
+                          </div>
+                        </div>
+                        {isSelected && (
+                          <div className="mt-2 ml-7">
+                            <Label className="text-xs">{t("outputFormat")}</Label>
+                            <select
+                              className="mt-1 block rounded-md border px-2 py-1 text-sm"
+                              value={binding.format}
+                              onChange={(e) =>
+                                setChannelFormat(
+                                  ch.id,
+                                  e.target.value as OutputFormat
+                                )
+                              }
+                            >
+                              <option value="audio">{t("formatAudio")}</option>
+                              <option value="link">{t("formatLink")}</option>
+                              <option value="both">{t("formatBoth")}</option>
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
+            {error && (
+              <p className="mt-3 text-sm text-destructive">{error}</p>
+            )}
           </CardContent>
         </Card>
       )}
@@ -640,7 +705,14 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
             </div>
             <div>
               <span className="font-medium">{t("outputChannels")}:</span>{" "}
-              {outputs.map((o) => o.type).join(", ") || "None"}
+              {bindings.length > 0
+                ? bindings
+                    .map((b) => {
+                      const ch = channels.find((c) => c.id === b.channelId);
+                      return ch ? ch.name : b.channelId;
+                    })
+                    .join(", ")
+                : "None"}
             </div>
             {error && (
               <p className="text-sm text-destructive">{error}</p>
@@ -659,7 +731,16 @@ export function JobWizard({ voices, initialData, jobId }: JobWizardProps) {
           {t("back")}
         </Button>
         {step < 5 ? (
-          <Button onClick={() => setStep(step + 1)}>
+          <Button
+            onClick={() => {
+              if (step === 4 && bindings.length === 0) {
+                setError(t("outputRequired"));
+                return;
+              }
+              setError("");
+              setStep(step + 1);
+            }}
+          >
             {t("next")}
           </Button>
         ) : (

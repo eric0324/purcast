@@ -5,9 +5,8 @@ import { calculateNextRunAt } from "@/lib/jobs/schedule";
 import type {
   JobSource,
   JobSchedule,
-  JobFilterConfig,
   JobGenerationConfig,
-  JobOutputConfig,
+  JobChannelBinding,
 } from "@/lib/jobs/types";
 
 // GET: List user's jobs
@@ -70,19 +69,31 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (!["rss", "url"].includes(source.type)) {
+    if (!["rss", "url", "reddit"].includes(source.type)) {
       return NextResponse.json(
         { errorKey: "jobs.invalidSourceType" },
         { status: 400 }
       );
     }
-    try {
-      new URL(source.url);
-    } catch {
-      return NextResponse.json(
-        { errorKey: "jobs.invalidSourceUrl" },
-        { status: 400 }
-      );
+    if (source.type === "reddit") {
+      // Reddit sources accept subreddit names, r/name, or full URLs
+      if (!/^[a-zA-Z0-9_]+$/.test(source.url) &&
+          !source.url.match(/^r\/[a-zA-Z0-9_]+$/) &&
+          !source.url.match(/reddit\.com\/r\/[a-zA-Z0-9_]+/)) {
+        return NextResponse.json(
+          { errorKey: "jobs.invalidSource" },
+          { status: 400 }
+        );
+      }
+    } else {
+      try {
+        new URL(source.url);
+      } catch {
+        return NextResponse.json(
+          { errorKey: "jobs.invalidSourceUrl" },
+          { status: 400 }
+        );
+      }
     }
   }
 
@@ -104,12 +115,28 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Validate output config
+  // Validate output config (channel bindings)
   if (!Array.isArray(outputConfig) || outputConfig.length === 0) {
     return NextResponse.json(
       { errorKey: "jobs.outputRequired" },
       { status: 400 }
     );
+  }
+
+  // Validate that all channelIds exist and belong to the user
+  const channelIds = (outputConfig as JobChannelBinding[]).map((b) => b.channelId);
+  const validChannels = await prisma.channel.findMany({
+    where: { id: { in: channelIds }, userId: user.id },
+    select: { id: true },
+  });
+  const validIds = new Set(validChannels.map((c) => c.id));
+  for (const cid of channelIds) {
+    if (!validIds.has(cid)) {
+      return NextResponse.json(
+        { errorKey: "channels.notFound" },
+        { status: 400 }
+      );
+    }
   }
 
   // Calculate next run time

@@ -45,6 +45,7 @@ export function ContentInputForm() {
   const [showSwitchDialog, setShowSwitchDialog] = useState(false);
   const [pendingTab, setPendingTab] = useState<Tab | null>(null);
   const [usage, setUsage] = useState<{ used: number; limit: number } | null>(null);
+  const [outputLanguage, setOutputLanguage] = useState("auto");
 
   useEffect(() => {
     fetch("/api/usage")
@@ -172,7 +173,10 @@ export function ContentInputForm() {
       fetch("/api/generate-script", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ podcastId: data.podcast.id }),
+        body: JSON.stringify({
+          podcastId: data.podcast.id,
+          outputLanguage: outputLanguage !== "auto" ? outputLanguage : undefined,
+        }),
       });
 
       router.push(`/create/${data.podcast.id}`);
@@ -186,6 +190,7 @@ export function ContentInputForm() {
     activeTab,
     currentContent,
     extracted,
+    outputLanguage,
     router,
     t,
     tErrors,
@@ -337,6 +342,20 @@ export function ContentInputForm() {
             {t("minCharsHint", { min: CONTENT_MIN_LENGTH })}
           </p>
         )}
+
+      {/* 輸出語言 */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium">{t("outputLanguage")}</label>
+        <select
+          className="block rounded-md border px-3 py-2 text-sm"
+          value={outputLanguage}
+          onChange={(e) => setOutputLanguage(e.target.value)}
+        >
+          <option value="auto">{t("langAuto")}</option>
+          <option value="zh-TW">{t("langZhTW")}</option>
+          <option value="en">{t("langEn")}</option>
+        </select>
+      </div>
 
       {/* 下一步按鈕 */}
       <Button

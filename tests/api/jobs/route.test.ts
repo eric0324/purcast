@@ -6,11 +6,13 @@ const {
   mockFindMany,
   mockCreate,
   mockCalculateNextRunAt,
+  mockChannelFindMany,
 } = vi.hoisted(() => ({
   mockGetCurrentUser: vi.fn(),
   mockFindMany: vi.fn(),
   mockCreate: vi.fn(),
   mockCalculateNextRunAt: vi.fn(),
+  mockChannelFindMany: vi.fn(),
 }));
 
 vi.mock("@/lib/auth/session", () => ({
@@ -22,6 +24,9 @@ vi.mock("@/lib/db/client", () => ({
     job: {
       findMany: mockFindMany,
       create: mockCreate,
+    },
+    channel: {
+      findMany: mockChannelFindMany,
     },
   },
 }));
@@ -52,7 +57,7 @@ const validJobBody = {
     maxArticles: 5,
     targetMinutes: 15,
   },
-  outputConfig: [{ type: "telegram", chatId: "123", format: "audio" }],
+  outputConfig: [{ channelId: "ch-1", format: "audio" }],
 };
 
 beforeEach(() => {
@@ -91,6 +96,7 @@ describe("POST /api/jobs", () => {
 
   it("creates a job successfully", async () => {
     mockGetCurrentUser.mockResolvedValue(mockUser);
+    mockChannelFindMany.mockResolvedValue([{ id: "ch-1" }]);
     mockCreate.mockResolvedValue({ id: "job-1", ...validJobBody });
 
     const res = await POST(makeRequest(validJobBody));

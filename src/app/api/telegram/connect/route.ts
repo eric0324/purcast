@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import {
   generateVerificationCode,
-  getVerifiedChatId,
+  peekVerifiedChatId,
 } from "@/lib/jobs/outputs/telegram-verify";
 
 // POST: Generate a verification code for the authenticated user
@@ -29,7 +29,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const chatId = getVerifiedChatId(user.id);
+  const chatId = peekVerifiedChatId(user.id);
 
   if (chatId) {
     return NextResponse.json({ verified: true, chatId });

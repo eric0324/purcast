@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 
 const COOKIE_NAME = "purcast_token";
 const AUTH_PAGES = ["/login", "/register", "/forgot-password", "/reset-password"];
+const PUBLIC_PAGES = ["/listen"];
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -24,8 +25,13 @@ export async function middleware(request: NextRequest) {
   // Strip locale prefix for path matching (next-intl may route via /en or /zh-TW internally)
   const pathWithoutLocale = pathname.replace(/^\/(zh-TW|en)(\/|$)/, "/");
 
-  // Let the landing page (/) pass through without auth
+  // Let the landing page (/) and public pages pass through without auth
   if (pathWithoutLocale === "/") {
+    return intlMiddleware(request);
+  }
+
+  const isPublicPage = PUBLIC_PAGES.some((p) => pathWithoutLocale.startsWith(p));
+  if (isPublicPage) {
     return intlMiddleware(request);
   }
 

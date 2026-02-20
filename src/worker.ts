@@ -7,7 +7,7 @@ import type {
   JobSchedule,
   JobFilterConfig,
   JobGenerationConfig,
-  JobOutputConfig,
+  JobChannelBinding,
 } from "@/lib/jobs/types";
 
 export async function checkDueJobs(): Promise<void> {
@@ -40,7 +40,7 @@ export async function checkDueJobs(): Promise<void> {
       schedule: job.schedule as unknown as JobSchedule,
       filterConfig: job.filterConfig as unknown as JobFilterConfig,
       generationConfig: job.generationConfig as unknown as JobGenerationConfig,
-      outputConfig: job.outputConfig as unknown as JobOutputConfig[],
+      outputConfig: job.outputConfig as unknown as JobChannelBinding[],
     }).catch((error) => {
       console.error(`[Worker] Unhandled error in job ${job.id}:`, error);
     });

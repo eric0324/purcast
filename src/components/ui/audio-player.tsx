@@ -33,17 +33,34 @@ export function AudioPlayer({ src, title, className, compact }: AudioPlayerProps
     const audio = audioRef.current;
     if (!audio) return;
 
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const onDurationChange = () => setDuration(audio.duration);
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+      // Some browsers only resolve duration after playback starts
+      if (audio.duration && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+    const onDurationChange = () => {
+      if (audio.duration && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
     const onEnded = () => setPlaying(false);
 
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("durationchange", onDurationChange);
+    audio.addEventListener("loadedmetadata", onDurationChange);
     audio.addEventListener("ended", onEnded);
+
+    // If metadata is already loaded (cached)
+    if (audio.duration && isFinite(audio.duration)) {
+      setDuration(audio.duration);
+    }
 
     return () => {
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("durationchange", onDurationChange);
+      audio.removeEventListener("loadedmetadata", onDurationChange);
       audio.removeEventListener("ended", onEnded);
     };
   }, []);
@@ -135,7 +152,7 @@ export function AudioPlayer({ src, title, className, compact }: AudioPlayerProps
             step="0.05"
             value={muted ? 0 : volume}
             onChange={handleVolumeChange}
-            className="h-1 w-20 accent-primary"
+            className="h-4 w-20 cursor-pointer accent-primary"
           />
         </div>
       )}

@@ -23,6 +23,18 @@ export default async function EditJobPage({ params }: PageProps) {
     select: { id: true, name: true },
   });
 
+  const channels = await prisma.channel.findMany({
+    where: { userId: user.id },
+    select: { id: true, name: true, type: true, config: true },
+  });
+
+  const serializedChannels = channels.map((ch) => ({
+    id: ch.id,
+    name: ch.name,
+    type: ch.type,
+    config: ch.config as Record<string, unknown>,
+  }));
+
   const initialData = {
     name: job.name,
     sources: job.sources,
@@ -40,6 +52,7 @@ export default async function EditJobPage({ params }: PageProps) {
       </div>
       <JobWizard
         voices={voices}
+        channels={serializedChannels}
         initialData={initialData as Record<string, unknown>}
         jobId={id}
       />

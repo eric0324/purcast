@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { podcastId } = await request.json();
+    const { podcastId, outputLanguage } = await request.json();
 
     if (!podcastId) {
       return NextResponse.json(
@@ -52,7 +52,9 @@ export async function POST(request: NextRequest) {
 
     try {
       const provider = createLLMProvider();
-      const result = await provider.generateScript(podcast.sourceContent);
+      const result = await provider.generateScript(podcast.sourceContent, {
+        outputLanguage: outputLanguage as string | undefined,
+      });
 
       await prisma.podcast.update({
         where: { id: podcastId },

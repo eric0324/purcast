@@ -1,9 +1,18 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeAll } from "vitest";
 
 // Must set env BEFORE jwt module is imported (JWT_SECRET is read at module level)
 vi.stubEnv("JWT_SECRET", "test-secret-key-for-vitest");
 
-const { signJWT, verifyJWT, generateResetToken } = await import("@/lib/auth/jwt");
+let signJWT: typeof import("@/lib/auth/jwt").signJWT;
+let verifyJWT: typeof import("@/lib/auth/jwt").verifyJWT;
+let generateResetToken: typeof import("@/lib/auth/jwt").generateResetToken;
+
+beforeAll(async () => {
+  const mod = await import("@/lib/auth/jwt");
+  signJWT = mod.signJWT;
+  verifyJWT = mod.verifyJWT;
+  generateResetToken = mod.generateResetToken;
+});
 
 describe("signJWT", () => {
   it("returns a valid JWT string", () => {
