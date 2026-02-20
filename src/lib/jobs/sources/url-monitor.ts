@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import type { FetchedArticle } from "./types";
 import { extractArticleContent } from "./extract-content";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 const FETCH_TIMEOUT = 30_000;
 
@@ -82,7 +83,7 @@ export function extractArticleLinks(html: string, baseUrl: URL): string[] {
     }
   });
 
-  return articleLinks;
+  return articleLinks.slice(0, HARD_LIMITS.urlMonitorMaxLinks);
 }
 
 function resolveUrl(href: string, baseUrl: URL): string | null {

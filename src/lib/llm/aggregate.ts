@@ -4,6 +4,7 @@ import type { GenerateScriptResult, DialogueScript } from "./types";
 import { LLMError } from "./types";
 import { STYLE_PRESETS } from "./style-presets";
 import type { StylePreset } from "@/lib/jobs/types";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 const MODEL = "claude-sonnet-4-5-20250929";
 const MAX_TOKENS = 8192;
@@ -201,6 +202,10 @@ function validateScript(script: unknown): asserts script is DialogueScript {
         "INVALID_RESPONSE",
         "Dialogue text must be non-empty"
       );
+    }
+    // Truncate overly long lines to control TTS cost
+    if (line.text.length > HARD_LIMITS.dialogueLineMaxLength) {
+      line.text = line.text.slice(0, HARD_LIMITS.dialogueLineMaxLength);
     }
   }
 }

@@ -15,9 +15,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Loader2, FileText, Globe, AlertCircle } from "lucide-react";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
-const CONTENT_MAX_LENGTH = 50_000;
-const CONTENT_MIN_LENGTH = 100;
+const CONTENT_MAX_LENGTH = HARD_LIMITS.contentMaxLength;
+const CONTENT_MIN_LENGTH = HARD_LIMITS.contentMinLength;
 
 type Tab = "text" | "url";
 

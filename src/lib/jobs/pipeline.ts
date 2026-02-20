@@ -19,6 +19,7 @@ import type {
   JobChannelBinding,
   SelectedArticle,
 } from "./types";
+import { HARD_LIMITS } from "@/lib/config/plan";
 import { nanoid } from "nanoid";
 import { writeFileSync, unlinkSync } from "node:fs";
 import { randomUUID } from "node:crypto";
@@ -65,13 +66,17 @@ export async function executeJob(jobData: JobData): Promise<void> {
     await updateRunStatus(run.id, "fetching");
     const articles = await fetchSources(jobData.sources);
 
-    // Step 3: Filter
+    // Step 3: Filter (enforce hard limits)
     await updateRunStatus(run.id, "filtering");
+    const clampedMaxArticles = Math.min(
+      jobData.generationConfig.maxArticles,
+      HARD_LIMITS.maxArticles
+    );
     const filterResult = await filterPipeline(
       articles,
       jobData.filterConfig,
       jobData.id,
-      jobData.generationConfig.maxArticles
+      clampedMaxArticles
     );
 
     // Update articles counts
@@ -98,10 +103,14 @@ export async function executeJob(jobData: JobData): Promise<void> {
 
     // Step 4: Generate aggregated script
     await updateRunStatus(run.id, "generating_script");
+    const clampedTargetMinutes = Math.min(
+      jobData.generationConfig.targetMinutes,
+      HARD_LIMITS.targetMinutesMax
+    );
     const scriptResult = await generateAggregatedScript(filterResult.selected, {
       stylePreset: jobData.generationConfig.stylePreset,
       customPrompt: jobData.generationConfig.customPrompt,
-      targetMinutes: jobData.generationConfig.targetMinutes,
+      targetMinutes: clampedTargetMinutes,
       outputLanguage: jobData.generationConfig.outputLanguage,
     });
 

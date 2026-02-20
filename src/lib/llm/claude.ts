@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { buildSystemPrompt, buildUserPrompt } from "./prompts";
 import type { DialogueScript, GenerateScriptResult, LLMProvider, ScriptOptions } from "./types";
 import { LLMError } from "./types";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 const MODEL = "claude-sonnet-4-5-20250929";
 const MAX_TOKENS = 8192;
@@ -138,6 +139,10 @@ export class ClaudeProvider implements LLMProvider {
 
       if (typeof line.text !== "string" || line.text.length === 0) {
         throw new LLMError("INVALID_RESPONSE", "Dialogue text must be non-empty");
+      }
+      // Truncate overly long lines to control TTS cost
+      if (line.text.length > HARD_LIMITS.dialogueLineMaxLength) {
+        line.text = line.text.slice(0, HARD_LIMITS.dialogueLineMaxLength);
       }
     }
   }

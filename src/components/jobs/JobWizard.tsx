@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 interface Voice {
   id: string;
@@ -493,8 +494,9 @@ export function JobWizard({ voices, channels, initialData, jobId }: JobWizardPro
               <textarea
                 className="mt-1 w-full rounded-md border px-3 py-2 text-sm"
                 rows={2}
+                maxLength={HARD_LIMITS.aiPromptMaxLength}
                 value={aiPrompt}
-                onChange={(e) => setAiPrompt(e.target.value)}
+                onChange={(e) => setAiPrompt(e.target.value.slice(0, HARD_LIMITS.aiPromptMaxLength))}
                 placeholder={t("aiFilterPlaceholder")}
               />
             </div>
@@ -577,9 +579,9 @@ export function JobWizard({ voices, channels, initialData, jobId }: JobWizardPro
                   type="number"
                   className="mt-1 w-24"
                   min={1}
-                  max={20}
+                  max={HARD_LIMITS.maxArticles}
                   value={maxArticles}
-                  onChange={(e) => setMaxArticles(Number(e.target.value))}
+                  onChange={(e) => setMaxArticles(Math.min(Number(e.target.value), HARD_LIMITS.maxArticles))}
                 />
               </div>
               <div>
@@ -588,9 +590,9 @@ export function JobWizard({ voices, channels, initialData, jobId }: JobWizardPro
                   type="number"
                   className="mt-1 w-24"
                   min={5}
-                  max={60}
+                  max={HARD_LIMITS.targetMinutesMax}
                   value={targetMinutes}
-                  onChange={(e) => setTargetMinutes(Number(e.target.value))}
+                  onChange={(e) => setTargetMinutes(Math.min(Number(e.target.value), HARD_LIMITS.targetMinutesMax))}
                 />
               </div>
             </div>

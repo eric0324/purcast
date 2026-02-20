@@ -8,6 +8,7 @@ import type {
   JobGenerationConfig,
   JobChannelBinding,
 } from "@/lib/jobs/types";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 // GET: List user's jobs
 export async function GET() {
@@ -113,6 +114,19 @@ export async function POST(request: NextRequest) {
       { errorKey: "jobs.invalidGenerationConfig" },
       { status: 400 }
     );
+  }
+
+  // Enforce hard limits
+  if (genConfig.targetMinutes) {
+    genConfig.targetMinutes = Math.min(genConfig.targetMinutes, HARD_LIMITS.targetMinutesMax);
+  }
+  if (genConfig.maxArticles) {
+    genConfig.maxArticles = Math.min(genConfig.maxArticles, HARD_LIMITS.maxArticles);
+  }
+
+  // Validate AI filter prompt length
+  if (filterConfig?.aiPrompt && filterConfig.aiPrompt.length > HARD_LIMITS.aiPromptMaxLength) {
+    filterConfig.aiPrompt = filterConfig.aiPrompt.slice(0, HARD_LIMITS.aiPromptMaxLength);
   }
 
   // Validate output config (channel bindings)

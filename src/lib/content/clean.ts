@@ -1,7 +1,9 @@
 import he from "he";
 
-export const CONTENT_MAX_LENGTH = 50_000;
-export const CONTENT_MIN_LENGTH = 100;
+import { HARD_LIMITS } from "@/lib/config/plan";
+
+export const CONTENT_MAX_LENGTH = HARD_LIMITS.contentMaxLength;
+export const CONTENT_MIN_LENGTH = HARD_LIMITS.contentMinLength;
 
 export function stripHtmlTags(html: string): string {
   // Remove script/style tags and their content

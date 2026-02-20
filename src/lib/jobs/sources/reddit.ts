@@ -1,9 +1,11 @@
 import type { FetchedArticle } from "./types";
 import type { RedditSort } from "../types";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 const FETCH_TIMEOUT = 30_000;
 const USER_AGENT = "PurCast/1.0 (podcast generator; +https://purcast.com)";
-const MAX_COMMENTS = 10;
+const MAX_POSTS = HARD_LIMITS.redditMaxPosts;
+const MAX_COMMENTS = HARD_LIMITS.redditMaxComments;
 
 interface RedditPost {
   title: string;
@@ -37,7 +39,7 @@ export async function fetchReddit(
   }
 
   const redditSort = mapSort(sort);
-  const apiUrl = `https://www.reddit.com/r/${subreddit}/${redditSort}.json?limit=25${getSortQuery(sort)}`;
+  const apiUrl = `https://www.reddit.com/r/${subreddit}/${redditSort}.json?limit=${MAX_POSTS}${getSortQuery(sort)}`;
 
   try {
     const posts = await fetchRedditJson<{ data: { children: { data: RedditPost }[] } }>(apiUrl);

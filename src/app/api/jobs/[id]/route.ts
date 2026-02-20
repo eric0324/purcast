@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db/client";
 import { calculateNextRunAt } from "@/lib/jobs/schedule";
 import type { JobSchedule } from "@/lib/jobs/types";
+import { HARD_LIMITS } from "@/lib/config/plan";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -63,8 +64,19 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
   if (body.name !== undefined) updateData.name = body.name;
   if (body.sources !== undefined) updateData.sources = JSON.parse(JSON.stringify(body.sources));
-  if (body.filterConfig !== undefined) updateData.filterConfig = JSON.parse(JSON.stringify(body.filterConfig));
-  if (body.generationConfig !== undefined) updateData.generationConfig = JSON.parse(JSON.stringify(body.generationConfig));
+  if (body.filterConfig !== undefined) {
+    const fc = body.filterConfig;
+    if (fc.aiPrompt && fc.aiPrompt.length > HARD_LIMITS.aiPromptMaxLength) {
+      fc.aiPrompt = fc.aiPrompt.slice(0, HARD_LIMITS.aiPromptMaxLength);
+    }
+    updateData.filterConfig = JSON.parse(JSON.stringify(fc));
+  }
+  if (body.generationConfig !== undefined) {
+    const gc = body.generationConfig;
+    if (gc.targetMinutes) gc.targetMinutes = Math.min(gc.targetMinutes, HARD_LIMITS.targetMinutesMax);
+    if (gc.maxArticles) gc.maxArticles = Math.min(gc.maxArticles, HARD_LIMITS.maxArticles);
+    updateData.generationConfig = JSON.parse(JSON.stringify(gc));
+  }
   if (body.outputConfig !== undefined) updateData.outputConfig = JSON.parse(JSON.stringify(body.outputConfig));
 
   // If schedule changed, recalculate nextRunAt
