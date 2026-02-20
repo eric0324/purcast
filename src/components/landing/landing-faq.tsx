@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ScrollFadeIn } from "./scroll-fade-in";
+import { PLAN_LIMITS } from "@/lib/config/plan";
 
 export function LandingFaq() {
   const t = useTranslations("Landing.faq");
@@ -23,7 +24,7 @@ export function LandingFaq() {
     },
     {
       question: t("q3.question"),
-      answer: t("q3.answer"),
+      answer: t("q3.answer", { limit: PLAN_LIMITS.free }),
     },
     {
       question: t("q4.question"),

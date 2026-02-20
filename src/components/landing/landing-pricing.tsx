@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ScrollFadeIn } from "./scroll-fade-in";
+import { PLAN_LIMITS } from "@/lib/config/plan";
 
 export function LandingPricing() {
   const t = useTranslations("Landing.pricing");
@@ -16,7 +17,7 @@ export function LandingPricing() {
       price: t("free.price"),
       description: t("free.description"),
       features: [
-        { text: t("free.feature1"), included: true },
+        { text: t("free.feature1", { limit: PLAN_LIMITS.free }), included: true },
         { text: t("free.feature2"), included: true },
         { text: t("free.feature3"), included: false },
         { text: t("free.feature4"), included: false },

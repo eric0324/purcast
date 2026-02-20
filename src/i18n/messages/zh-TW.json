@@ -587,7 +587,7 @@
         "name": "免費方案",
         "price": "NT$0 / 月",
         "description": "適合想試用的使用者",
-        "feature1": "每月 3 個 Podcast",
+        "feature1": "每月 {limit} 個 Podcast",
         "feature2": "使用預設聲音",
         "feature3": "聲音複製功能",
         "feature4": "優先處理",
@@ -617,7 +617,7 @@
       },
       "q3": {
         "question": "免費方案和 Pro 方案有什麼差別？",
-        "answer": "免費方案每月可生成 3 個 Podcast，僅能使用預設聲音。Pro 方案可無限生成，並支援聲音複製功能和優先處理。"
+        "answer": "免費方案每月可生成 {limit} 個 Podcast，僅能使用預設聲音。Pro 方案提供更高額度，並支援聲音複製功能和優先處理。"
       },
       "q4": {
         "question": "生成一個 Podcast 需要多久？",

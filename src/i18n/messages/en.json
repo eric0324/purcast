@@ -587,7 +587,7 @@
         "name": "Free Plan",
         "price": "$0 / month",
         "description": "Perfect for trying out the platform",
-        "feature1": "3 podcasts per month",
+        "feature1": "{limit} podcasts per month",
         "feature2": "Default voices only",
         "feature3": "Voice cloning",
         "feature4": "Priority processing",
@@ -617,7 +617,7 @@
       },
       "q3": {
         "question": "What's the difference between Free and Pro plans?",
-        "answer": "Free plan allows 3 podcasts per month with default voices only. Pro plan offers unlimited generation, voice cloning, and priority processing."
+        "answer": "Free plan allows {limit} podcasts per month with default voices only. Pro plan offers higher quota, voice cloning, and priority processing."
       },
       "q4": {
         "question": "How long does it take to generate a podcast?",

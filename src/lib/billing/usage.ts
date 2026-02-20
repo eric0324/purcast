@@ -1,9 +1,5 @@
 import { prisma } from "@/lib/db/client";
-
-const PLAN_LIMITS = {
-  free: 5,
-  pro: 100,
-} as const;
+import { PLAN_LIMITS } from "@/lib/config/plan";
 
 interface UsageCheckResult {
   allowed: boolean;
